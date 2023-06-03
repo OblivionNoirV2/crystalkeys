@@ -41,14 +41,17 @@ const key_sets: { [row: string]: string[] } = {
   ],
 }
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
-
   const [keyColors, setKeyColors] = useState<string[]>(key_sets.top_row.map(
     () => '#fff'));
+  const [prevColors, setPrevColors] = useState<string[]>([]);
 
   const handleKeyClick = (index: number) => {
     const newKeyColors = [...keyColors];
     newKeyColors[index] = selected_color;
     setKeyColors(newKeyColors);
+    if (!prevColors.includes(selected_color)) {
+      setPrevColors(prevColors => [...prevColors, selected_color]);
+    }
   };
 
   return (
@@ -59,16 +62,19 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
           onClick={() => handleKeyClick(index)}
           key={index} />
       ))}
+      {/*will need context to display in the correct area*/}
+      <h1>Previous:</h1>
+      {prevColors.length !== 0 && prevColors.map((color, index) => (
+        <li key={index}>{color}</li>
+      ))}
     </section>
   );
 };
 
 const ColorPicker = () => {
   const [color, setColor] = useState<string>('#000000')
-  const [prevColors, setPrevColors] = useState<string[]>([])
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value)
-    setPrevColors(prevColors => [...prevColors, e.target.value])
   }
   return (
     <main className='flex'>
@@ -76,14 +82,11 @@ const ColorPicker = () => {
       <section className='flex flex-col'>
         <h1>Selected color: {color} </h1>
         <input type='color' value={color} onChange={handleColorChange} />
-        <h1>Previous:</h1>
-        {prevColors.length !== 0 && prevColors.map((color, index) => (
-          <li key={index}>{color}</li>
-        ))}
       </section>
     </main>
   )
 }
+
 function App() {
   return (
     <main>
