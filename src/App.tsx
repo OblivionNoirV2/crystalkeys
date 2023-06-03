@@ -18,14 +18,51 @@ which then changes the color of whatever key is clicked*/
 interface KeyboardProps {
   selected_color: string;
 }
-const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
-  return (
-    <section>
-      temp
-    </section>
-  )
-
+interface KeyProps {
+  label: string;
+  color: string;
+  onClick: () => void;
 }
+
+const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
+  const className = label === '' ? 'key-hidden' : 'key'
+  return (
+    <button style={{ backgroundColor: color }} onClick={onClick}
+      className={className}>
+      {label}
+    </button>
+  );
+};
+//split the keyboard into different segments
+const key_sets: { [row: string]: string[] } = {
+  top_row: [
+    'Esc', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
+    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', 'PrtSc', 'ScrLk', 'Pause'
+  ],
+}
+const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
+
+  const [keyColors, setKeyColors] = useState<string[]>(key_sets.top_row.map(
+    () => '#fff'));
+
+  const handleKeyClick = (index: number) => {
+    const newKeyColors = [...keyColors];
+    newKeyColors[index] = selected_color;
+    setKeyColors(newKeyColors);
+  };
+
+  return (
+    <section className='keyboard'>
+      {key_sets.top_row.map((key, index) => (
+        <Key label={key} color={keyColors[index]}
+          //pass the function being called to the key itself
+          onClick={() => handleKeyClick(index)}
+          key={index} />
+      ))}
+    </section>
+  );
+};
+
 const ColorPicker = () => {
   const [color, setColor] = useState<string>('#000000')
   const [prevColors, setPrevColors] = useState<string[]>([])
@@ -43,8 +80,6 @@ const ColorPicker = () => {
         {prevColors.length !== 0 && prevColors.map((color, index) => (
           <li key={index}>{color}</li>
         ))}
-
-
       </section>
     </main>
   )
