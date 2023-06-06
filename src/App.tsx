@@ -42,13 +42,17 @@ const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
 //split the keyboard into different segments
 const key_sets: { [row: string]: string[] } = {
   top_row: [
-    'Esc', '', '', '', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
-    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', '', '', '', 'PrtSc', 'ScrLk', 'Pause'
+    'Esc', '', '', '', '', '', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
+    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', '', '', 'PrtSc', 'ScrLk', 'Pause'
   ],
   second_row: [
     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
-    'Backspace', '', '', '', 'Ins', 'Home', 'PgUp'
+    'Backspace', '', '', 'Ins', 'Home', 'PgUp'
   ],
+  third_row: [
+    'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
+    'P', '[', ']', '|', 'Del', '', '', '', 'End', 'PgDn'
+  ]
 };
 //for unique keys that need a little more work
 function GetClassForIndex() {
@@ -62,8 +66,6 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
   const [keyColors, setKeyColors] = useState<string[]>(
     keys_array.map(
       () => '#fff'));
-
-
   const handleKeyClick = (index: number) => {
     const new_key_colors = [...keyColors];
     new_key_colors[index] = selected_color;

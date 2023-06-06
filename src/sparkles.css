@@ -10,10 +10,11 @@ body {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
+/*note that width DOES override min-width*/
 .key {
-  margin: .2rem;
-  min-width: 2vw;
-  padding: 1rem .5rem 1rem .5rem;
+  margin: .4rem;
+  min-width: 3vw;
+  padding: 1rem 1rem 1rem 1rem;
   border-radius: .5rem;
   border: .1rem solid black;
   background-color: #fff;
