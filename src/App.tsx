@@ -42,15 +42,25 @@ const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
 //split the keyboard into different segments
 const key_sets: { [row: string]: string[] } = {
   top_row: [
-    'Esc', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
-    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', 'PrtSc', 'ScrLk', 'Pause'
+    'Esc', '', '', '', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
+    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', '', '', '', 'PrtSc', 'ScrLk', 'Pause'
+  ],
+  second_row: [
+    '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+    'Backspace', '', '', '', 'Ins', 'Home', 'PgUp'
   ],
 };
+//for unique keys that need a little more work
+function GetClassForIndex() {
+
+}
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
+  const keys_array = Object.values(key_sets);
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   //map them all to a default of white
+  //this will hbe a seperate function that serves as the reset btn too
   const [keyColors, setKeyColors] = useState<string[]>(
-    key_sets.top_row.map(
+    keys_array.map(
       () => '#fff'));
 
 
@@ -63,17 +73,36 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
     }
   };
   return (
-    <section className='keyboard '>
-      {key_sets.top_row.map((key, index) => (
-        <Key label={key} color={keyColors[index]}
-          //pass the function being called to the key itself
-          onClick={() => handleKeyClick(index)}
-          key={index} />
-      ))}
+    <section className='keyboard'>
+      <div className='keyboard-row'>
+        {key_sets.top_row.map((key, index) => (
+          <Key label={key} color={keyColors[index]}
+            onClick={() => handleKeyClick(index)}
+            key={index} />
+        ))}
+      </div>
+      <div className='keyboard-row'>
+        {key_sets.second_row.map((key, index) => (
+          <Key label={key} color={keyColors[index + key_sets.top_row.length]}
+            onClick={() => handleKeyClick(index + key_sets.top_row.length)}
+            key={index + key_sets.top_row.length} />
+        ))}
+      </div>
     </section>
   );
 };
-
+interface ResetButtonProps {
+  prev_colors: string[];
+}
+const ResetButton: React.FC<ResetButtonProps> = ({ prev_colors }) => {
+  const { setPrevColors } = useContext(PrevColorsContext);
+  const handleReset = () => {
+    setPrevColors([]);
+  }
+  return (
+    <button onClick={handleReset}>Reset</button>
+  );
+}
 const ColorPicker = () => {
   const { prevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
@@ -90,6 +119,7 @@ const ColorPicker = () => {
         {prevColors.length !== 0 && prevColors.map((color, index) => (
           <li key={index}>{color}</li>
         ))}
+        <ResetButton prev_colors={prevColors} />
       </section>
     </main>
   );
