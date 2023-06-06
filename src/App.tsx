@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './sparkles.css';
 import './App.css';
 import blueswitch from './audio/blueswitch.mp3';
 import redswitch from './audio/redswitch.mp3';
+import { PrevColorsContext } from './context';
 const TopBar = () => {
   return (
     <section className='crystal items-center w-full h-20 flex justify-end'>
@@ -46,21 +47,21 @@ const key_sets: { [row: string]: string[] } = {
   ],
 };
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
+  const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   //map them all to a default of white
   const [keyColors, setKeyColors] = useState<string[]>(
     key_sets.top_row.map(
       () => '#fff'));
-  const [prevColors, setPrevColors] = useState<string[]>([]);
+
 
   const handleKeyClick = (index: number) => {
     const new_key_colors = [...keyColors];
     new_key_colors[index] = selected_color;
     setKeyColors(new_key_colors);
     if (!prevColors.includes(selected_color)) {
-      setPrevColors(prevColors => [...prevColors, selected_color]);
+      setPrevColors([...prevColors, selected_color]);
     }
   };
-
   return (
     <section className='keyboard '>
       {key_sets.top_row.map((key, index) => (
@@ -69,16 +70,12 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
           onClick={() => handleKeyClick(index)}
           key={index} />
       ))}
-      {/*will need context to display in the correct area*/}
-      <h1>Previous:</h1>
-      {prevColors.length !== 0 && prevColors.map((color, index) => (
-        <li key={index}>{color}</li>
-      ))}
     </section>
   );
 };
 
 const ColorPicker = () => {
+  const { prevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value)
@@ -89,6 +86,10 @@ const ColorPicker = () => {
       <section className='flex flex-col'>
         <h1>Selected color: {color} </h1>
         <input type='color' value={color} onChange={handleColorChange} />
+        <h1>Previous:</h1>
+        {prevColors.length !== 0 && prevColors.map((color, index) => (
+          <li key={index}>{color}</li>
+        ))}
       </section>
     </main>
   );
@@ -97,6 +98,10 @@ const ColorPicker = () => {
 function App() {
   return (
     <main>
+      <audio>
+        <source src={blueswitch} type='audio/mpeg' />
+        <source src={redswitch} type='audio/mpeg' />
+      </audio>
       <TopBar />
       <ColorPicker />
     </main>
