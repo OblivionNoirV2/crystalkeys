@@ -4,6 +4,7 @@ import './App.css';
 import blueswitch from './audio/blueswitch.mp3';
 import redswitch from './audio/redswitch.mp3';
 import { PrevColorsContext } from './context';
+import { KeyColorsContext } from './context';
 const TopBar = () => {
   return (
     <section className='crystal items-center w-full h-20 flex justify-end'>
@@ -29,7 +30,8 @@ interface KeyProps {
 //todo: flip between hex/rgb
 //for mobile, rotate the whole thing 90 degrees
 const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
-  const className = label === '' ? 'key-hidden' : 'key'
+  const className = label === '' ? 'key-hidden' :
+    `${getClassForKey(label)}`
   return (
     <button style={{ backgroundColor: color }} onClick={onClick}
       className={className}>
@@ -43,7 +45,7 @@ const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
 const key_sets: { [row: string]: string[] } = {
   top_row: [
     'Esc', '', '', '', '', '', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
-    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', '', '', 'PrtSc', 'ScrLk', 'Pause'
+    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', '', '', '', 'PrtSc', 'ScrLk', 'Pause'
   ],
   second_row: [
     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
@@ -55,9 +57,11 @@ const key_sets: { [row: string]: string[] } = {
   ]
 };
 //for unique keys that need a little more work
-function GetClassForIndex() {
-
+function getClassForKey(key_label: string) {
+  //default is just 'key', some require more work
+  return 'key';
 }
+
 export const keys_array = Object.values(key_sets);
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
 
