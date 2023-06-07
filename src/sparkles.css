@@ -42,3 +42,10 @@ body {
 .key:active {
   transform: scale(0.95);
 }
+
+/*align self prevents auto scaling with the prev colors columns*/
+.keyboard {
+  border: .25rem solid black;
+  border-radius: .5rem;
+  align-self: flex-start;
+}

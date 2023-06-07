@@ -102,10 +102,8 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
     </section>
   );
 };
-interface ResetButtonProps {
-  prev_colors: string[];
-}
-const ResetButton: React.FC<ResetButtonProps> = ({ prev_colors }) => {
+
+const ResetButton = () => {
   const { setPrevColors } = useContext(PrevColorsContext);
   const handleReset = () => {
     setPrevColors([]);
@@ -114,6 +112,7 @@ const ResetButton: React.FC<ResetButtonProps> = ({ prev_colors }) => {
     <button onClick={handleReset}>Reset</button>
   );
 }
+
 const ColorPicker = () => {
   const { prevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
@@ -134,33 +133,53 @@ const ColorPicker = () => {
   }
 
   return (
-    <main className='flex'>
+    <main className='flex flex-row parent'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <section className='flex flex-col'>
-        <h1>Key color: {color} </h1>
-        <input type='color' value={color} onChange={handleColorChange} />
-        <h1>Previous key colors:</h1>
-        {prevColors.length !== 0 && prevColors.map((color, index) => (
-          //switches it back to the clicked color
-          <button onClick={() => setColor(color)}>
-            <li key={index}>{color}</li>
-          </button>
-        ))}
-        <div>
-          <h1>Board color {boardColor}:</h1>
-          <input type='color' value={boardColor}
-            onChange={handleBoardColorChange} />
-          <h1>Previous board colors:</h1>
-          {prevBoardColors.length !== 0 && prevBoardColors.map(
-            (color, index) => (
-              //can click to revert back to that color
-              <button onClick={() => setBoardColor(color)}>
-                <li key={index}>{color}</li>
+      <section className=''>
+        <div className='flex ml-8'>
+          <div className='flex flex-col'>
+            <h1>Key color: {color} </h1>
+            <input type='color' value={color} onChange={handleColorChange} />
+            <h1>Previous key colors:</h1>
+            {prevColors.length !== 0 && prevColors.map((color, index) => (
+              //switches it back to the clicked color
+              <button onClick={() => setColor(color)}>
+                <li key={index} className=''>
+                  {/*little window showing the color */}
+                  <div className='px-2 flex flex-col'
+                    style={{ backgroundColor: color }}
+                    title={color}>
+                    {color}
+                  </div>
+                </li>
               </button>
-            )
-          )}
+            ))}
+          </div>
+          <div className='flex flex-col ml-8'>
+            <h1>Board color {boardColor}:</h1>
+            <input type='color' value={boardColor}
+              onChange={handleBoardColorChange} />
+            <h1>Previous board colors:</h1>
+            {prevBoardColors.length !== 0 && prevBoardColors.map(
+              (color, index) => (
+                //can click to revert back to that color
+                <button onClick={() => setBoardColor(color)}>
+                  <li key={index} className='flex flex-col'>
+                    {/*little window showing the color */}
+                    <div className='px-2 flex flex-col'
+                      style={{ backgroundColor: color }}
+                      title={color}>
+                      {color}
+                    </div>
+                  </li>
+                </button>
+              )
+            )}
+          </div>
+          <section>
+            <ResetButton />
+          </section>
         </div>
-        <ResetButton prev_colors={prevColors} />
       </section>
     </main>
   );
