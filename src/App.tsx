@@ -19,9 +19,7 @@ const TopBar = () => {
 /*how this is going to work is the color picker will 
 set the color state, which is then passed to the keyboard component, 
 which then changes the color of whatever key is clicked*/
-interface KeyboardProps {
-  selected_color: string;
-};
+
 interface KeyProps {
   label: string;
   color: string;
@@ -30,8 +28,7 @@ interface KeyProps {
 //todo: flip between hex/rgb
 //for mobile, rotate the whole thing 90 degrees
 const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
-  const className = label === '' ? 'key-hidden' :
-    `${getClassForKey(label)}`
+  const className = `${getClassForKey(label)}`
   return (
     <button style={{ backgroundColor: color }} onClick={onClick}
       className={className}>
@@ -44,30 +41,36 @@ const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
 //split the keyboard into different segments
 const key_sets: { [row: string]: string[] } = {
   top_row: [
-    'Esc', '', '', '', '', '', '', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6',
-    'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', '', '', '', 'PrtSc', 'ScrLk', 'Pause'
+    'Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6',
+    'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'PrtSc', 'ScrLk', 'Pause'
   ],
   second_row: [
     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
-    'Backspace', '', '', 'Ins', 'Home', 'PgUp'
+    'Backspace', 'Ins', 'Home', 'PgUp'
   ],
   third_row: [
     'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
-    'P', '[', ']', '|', 'Del', '', '', '', 'End', 'PgDn'
+    'P', '[', ']', '|', 'Del', 'End', 'PgDn'
   ]
 };
 //for unique keys that need a little more work
-function getClassForKey(key_label: string) {
+function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
   return 'key';
 }
 
 export const keys_array = Object.values(key_sets);
-const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
+interface KeyboardProps {
+  selected_color: string;
+  selected_board_color: string;
+};
+const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
 
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   //map them all to a default of white
   //this will hbe a seperate function that serves as the reset btn too
+
+  //stores list of used colors 
   const [keyColors, setKeyColors] = useState<string[]>(
     keys_array.map(
       () => '#fff'));
@@ -75,12 +78,13 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
     const new_key_colors = [...keyColors];
     new_key_colors[index] = selected_color;
     setKeyColors(new_key_colors);
+
     if (!prevColors.includes(selected_color)) {
       setPrevColors([...prevColors, selected_color]);
     }
   };
   return (
-    <section className='keyboard'>
+    <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
       <div className='keyboard-row'>
         {key_sets.top_row.map((key, index) => (
           <Key label={key} color={keyColors[index]}
@@ -113,19 +117,32 @@ const ResetButton: React.FC<ResetButtonProps> = ({ prev_colors }) => {
 const ColorPicker = () => {
   const { prevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
+  const [boardColor, setBoardColor] = useState<string>('#242c9e')
+  //keys
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value)
   }
+  //background
+  const handleBoardColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBoardColor(e.target.value)
+  }
+
   return (
     <main className='flex'>
-      <Keyboard selected_color={color} />
+      <Keyboard selected_color={color} selected_board_color={boardColor} />
       <section className='flex flex-col'>
-        <h1>Selected color: {color} </h1>
+        <h1>Key color: {color} </h1>
         <input type='color' value={color} onChange={handleColorChange} />
-        <h1>Previous:</h1>
+        <h1>Previous key colors:</h1>
         {prevColors.length !== 0 && prevColors.map((color, index) => (
           <li key={index}>{color}</li>
         ))}
+        <div>
+          <h1>Board color {boardColor}:</h1>
+          <input type='color' value={boardColor}
+            onChange={handleBoardColorChange} />
+          <h1>Previous board colors:</h1>
+        </div>
         <ResetButton prev_colors={prevColors} />
       </section>
     </main>
