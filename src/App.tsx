@@ -58,8 +58,9 @@ const key_sets: { [row: string]: string[] } = {
 function GetClassForIndex() {
 
 }
+export const keys_array = Object.values(key_sets);
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color }) => {
-  const keys_array = Object.values(key_sets);
+
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   //map them all to a default of white
   //this will hbe a seperate function that serves as the reset btn too

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { keys_array } from './App';
 
 interface prevColorsValues {
     prevColors: string[];
@@ -21,5 +22,31 @@ export function PrevColorsContextProvider({ children }: { children: React.ReactE
         <PrevColorsContext.Provider value={{ prevColors, setPrevColors }}>
             {children}
         </PrevColorsContext.Provider>
+    )
+}
+
+interface keyColorsValues {
+    keyColors: string[];
+    setKeyColors: (value: string[]) => void;
+}
+
+export const KeyColorsContext = createContext<keyColorsValues>({
+    keyColors: [],
+    setKeyColors: () => { }
+})
+
+export function KeyColorsContextProvider({ children }: { children: React.ReactElement }) {
+    const [keyColors, setKeyColors] = useState<string[]>(
+        keys_array.map(
+            () => '#fff'));
+
+    useEffect(() => {
+        console.log("color changed" + keyColors);
+    }, [keyColors]);
+
+    return (
+        <KeyColorsContext.Provider value={{ keyColors, setKeyColors }}>
+            {children}
+        </KeyColorsContext.Provider>
     )
 }
