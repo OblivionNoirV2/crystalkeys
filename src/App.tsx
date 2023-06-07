@@ -118,6 +118,7 @@ const ColorPicker = () => {
   const { prevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
   const [boardColor, setBoardColor] = useState<string>('#242c9e')
+  const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);
   //keys
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value)
@@ -125,6 +126,11 @@ const ColorPicker = () => {
   //background
   const handleBoardColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBoardColor(e.target.value)
+
+    //prevents triggering the same color twice
+    if (!prevBoardColors.includes(e.target.value)) {
+      setPrevBoardColors([...prevBoardColors, e.target.value]);
+    }
   }
 
   return (
@@ -135,13 +141,24 @@ const ColorPicker = () => {
         <input type='color' value={color} onChange={handleColorChange} />
         <h1>Previous key colors:</h1>
         {prevColors.length !== 0 && prevColors.map((color, index) => (
-          <li key={index}>{color}</li>
+          //switches it back to the clicked color
+          <button onClick={() => setColor(color)}>
+            <li key={index}>{color}</li>
+          </button>
         ))}
         <div>
           <h1>Board color {boardColor}:</h1>
           <input type='color' value={boardColor}
             onChange={handleBoardColorChange} />
           <h1>Previous board colors:</h1>
+          {prevBoardColors.length !== 0 && prevBoardColors.map(
+            (color, index) => (
+              //can click to revert back to that color
+              <button onClick={() => setBoardColor(color)}>
+                <li key={index}>{color}</li>
+              </button>
+            )
+          )}
         </div>
         <ResetButton prev_colors={prevColors} />
       </section>
