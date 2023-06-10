@@ -51,7 +51,36 @@ const key_sets: { [row: string]: string[] } = {
   third_row: [
     'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
     'P', '[', ']', '|', 'Del', 'End', 'PgDn'
+  ],
+  fourth_row: [
+    'CapsLk', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'
   ]
+};
+//displays them on the screen in row order
+function mapKeys() {
+  for (let row in key_sets) {
+    return (
+      <div className='keyboard-row'>
+        {
+          key_sets.values.map((key, index) => (
+            <Key label={key} color={keyColors[index]}
+              //put a ternary in here 
+              onClick={() => handleKeyClick(index)}
+              key={index} />
+          ))
+        }
+      </div>
+    )
+  }
+}
+const handleKeyClick = (index: number) => {
+  const new_key_colors = [...keyColors];
+  new_key_colors[index] = selected_color;
+  setKeyColors(new_key_colors);
+
+  if (!prevColors.includes(selected_color)) {
+    setPrevColors([...prevColors, selected_color]);
+  }
 };
 //for unique keys that need a little more work
 function getClassForKey(key_label: string): string {
@@ -74,23 +103,16 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
   const [keyColors, setKeyColors] = useState<string[]>(
     keys_array.map(
       () => '#fff'));
-  const handleKeyClick = (index: number) => {
-    const new_key_colors = [...keyColors];
-    new_key_colors[index] = selected_color;
-    setKeyColors(new_key_colors);
 
-    if (!prevColors.includes(selected_color)) {
-      setPrevColors([...prevColors, selected_color]);
-    }
-  };
   return (
     <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
       <div className='keyboard-row'>
-        {key_sets.top_row.map((key, index) => (
-          <Key label={key} color={keyColors[index]}
-            onClick={() => handleKeyClick(index)}
-            key={index} />
-        ))}
+        {
+          key_sets.top_row.map((key, index) => (
+            <Key label={key} color={keyColors[index]}
+              onClick={() => handleKeyClick(index)}
+              key={index} />
+          ))}
       </div>
       <div className='keyboard-row'>
         {key_sets.second_row.map((key, index) => (
