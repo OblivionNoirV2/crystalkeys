@@ -5,6 +5,7 @@ import blueswitch from './audio/blueswitch.mp3';
 import redswitch from './audio/redswitch.mp3';
 import { PrevColorsContext } from './context';
 import { KeyColorsContext } from './context';
+import { SelectedColorContext } from './context';
 const TopBar = () => {
   return (
     <section className='crystal items-center w-full h-20 flex justify-end'>
@@ -57,31 +58,36 @@ const key_sets: { [row: string]: string[] } = {
   ]
 };
 //displays them on the screen in row order
-function mapKeys() {
-  for (let row in key_sets) {
-    return (
-      <div className='keyboard-row'>
-        {
-          key_sets.values.map((key, index) => (
+const MapKeys = () => {
+  const { prevColors, setPrevColors } = useContext(PrevColorsContext);
+  const { keyColors, setKeyColors } = useContext(KeyColorsContext);
+  const { selectedColor, setSelectedColor } = useContext(SelectedColorContext);
+
+  const handleKeyClick = (index: number) => {
+    const new_key_colors = [...keyColors];
+    new_key_colors[index] = selectedColor;
+    setKeyColors(new_key_colors);
+
+    if (!prevColors.includes(selectedColor)) {
+      setPrevColors([...prevColors, selectedColor]);
+    }
+  };
+
+  return (
+    <>
+      {Object.keys(key_sets).map((row) => (
+        <div className='keyboard-row' key={row}>
+          {key_sets[row].map((key, index) => (
             <Key label={key} color={keyColors[index]}
-              //put a ternary in here 
               onClick={() => handleKeyClick(index)}
               key={index} />
-          ))
-        }
-      </div>
-    )
-  }
-}
-const handleKeyClick = (index: number) => {
-  const new_key_colors = [...keyColors];
-  new_key_colors[index] = selected_color;
-  setKeyColors(new_key_colors);
-
-  if (!prevColors.includes(selected_color)) {
-    setPrevColors([...prevColors, selected_color]);
-  }
+          ))}
+        </div>
+      ))}
+    </>
+  );
 };
+
 //for unique keys that need a little more work
 function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
@@ -96,23 +102,29 @@ interface KeyboardProps {
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
 
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
-  //map them all to a default of white
-  //this will hbe a seperate function that serves as the reset btn too
-
   //stores list of used colors 
   const [keyColors, setKeyColors] = useState<string[]>(
-    keys_array.map(
-      () => '#fff'));
+    keys_array.map(() => '#fff')
+  );
+
+  const handleKeyClick = (index: number) => {
+    const new_key_colors = [...keyColors];
+    new_key_colors[index] = selected_color;
+    setKeyColors(new_key_colors);
+
+    if (!prevColors.includes(selected_color)) {
+      setPrevColors([...prevColors, selected_color]);
+    }
+  };
 
   return (
     <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
       <div className='keyboard-row'>
-        {
-          key_sets.top_row.map((key, index) => (
-            <Key label={key} color={keyColors[index]}
-              onClick={() => handleKeyClick(index)}
-              key={index} />
-          ))}
+        {key_sets.top_row.map((key, index) => (
+          <Key label={key} color={keyColors[index]}
+            onClick={() => handleKeyClick(index)}
+            key={index} />
+        ))}
       </div>
       <div className='keyboard-row'>
         {key_sets.second_row.map((key, index) => (
@@ -124,6 +136,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
     </section>
   );
 };
+
 
 const ResetButton = () => {
   const { setPrevColors } = useContext(PrevColorsContext);
@@ -137,6 +150,7 @@ const ResetButton = () => {
 
 const ColorPicker = () => {
   const { prevColors } = useContext(PrevColorsContext);
+  //needs context
   const [color, setColor] = useState<string>('#000000')
   const [boardColor, setBoardColor] = useState<string>('#242c9e')
   const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);

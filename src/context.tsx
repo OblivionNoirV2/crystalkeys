@@ -50,3 +50,26 @@ export function KeyColorsContextProvider({ children }: { children: React.ReactEl
         </KeyColorsContext.Provider>
     )
 }
+
+interface selectedColorValues {
+    selectedColor: string;
+    setSelectedColor: (value: string) => void;
+}
+
+export const SelectedColorContext = createContext<selectedColorValues>({
+    selectedColor: '',
+    setSelectedColor: () => { }
+})
+
+export function SelectedColorContextProvider({ children }: { children: React.ReactElement }) {
+    const [selectedColor, setSelectedColor] = useState<string>('#000000')
+    useEffect(() => {
+        console.log("color changed" + selectedColor);
+    }, [selectedColor]);
+
+    return (
+        <SelectedColorContext.Provider value={{ selectedColor, setSelectedColor }}>
+            {children}
+        </SelectedColorContext.Provider>
+    )
+}
