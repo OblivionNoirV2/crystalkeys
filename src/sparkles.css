@@ -13,7 +13,7 @@ body {
 /*note that width DOES override min-width*/
 .key {
   margin: .4rem;
-  min-width: 3vw;
+  min-width: 2vw;
   padding: 1rem 1rem 1rem 1rem;
   border-radius: .5rem;
   border: .1rem solid black;
@@ -48,4 +48,8 @@ body {
   border: .25rem solid black;
   border-radius: .5rem;
   align-self: flex-start;
+}
+
+.parent {
+  max-width: 100vw;
 }

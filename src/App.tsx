@@ -94,15 +94,20 @@ function getClassForKey(key_label: string): string {
   return 'key';
 }
 
-export const keys_array = Object.values(key_sets);
 interface KeyboardProps {
   selected_color: string;
   selected_board_color: string;
 };
-const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
+//Convert the key_sets object to a flat array
+export const keys_array: string[] = [];
+for (let row in key_sets) {
+  //use spread to merge them into one array
+  keys_array.push(...key_sets[row]);
+}
 
+// Adjust the Keyboard component to map over keys_array directly
+const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
-  //stores list of used colors 
   const [keyColors, setKeyColors] = useState<string[]>(
     keys_array.map(() => '#fff')
   );
@@ -119,23 +124,15 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
 
   return (
     <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
-      <div className='keyboard-row'>
-        {key_sets.top_row.map((key, index) => (
-          <Key label={key} color={keyColors[index]}
-            onClick={() => handleKeyClick(index)}
-            key={index} />
-        ))}
-      </div>
-      <div className='keyboard-row'>
-        {key_sets.second_row.map((key, index) => (
-          <Key label={key} color={keyColors[index + key_sets.top_row.length]}
-            onClick={() => handleKeyClick(index + key_sets.top_row.length)}
-            key={index + key_sets.top_row.length} />
-        ))}
-      </div>
+      {keys_array.map((key, index) => (
+        <Key label={key} color={keyColors[index]}
+          onClick={() => handleKeyClick(index)}
+          key={index} />
+      ))}
     </section>
   );
 };
+
 
 
 const ResetButton = () => {
@@ -171,16 +168,35 @@ const ColorPicker = () => {
   return (
     <main className='flex flex-row parent'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <section className=''>
-        <div className='flex ml-8'>
-          <div className='flex flex-col'>
-            <h1>Key color: {color} </h1>
-            <input type='color' value={color} onChange={handleColorChange} />
-            <h1>Previous key colors:</h1>
-            {prevColors.length !== 0 && prevColors.map((color, index) => (
-              //switches it back to the clicked color
-              <button onClick={() => setColor(color)}>
-                <li key={index} className=''>
+      <div className='flex ml-8'>
+        <div className='flex flex-col'>
+          <h1>Key color: {color} </h1>
+          <input type='color' value={color} onChange={handleColorChange} />
+          <h1>Previous key colors:</h1>
+          {prevColors.length !== 0 && prevColors.map((color, index) => (
+            //switches it back to the clicked color
+            <button onClick={() => setColor(color)}>
+              <li key={index} className=''>
+                {/*little window showing the color */}
+                <div className='px-2 flex flex-col'
+                  style={{ backgroundColor: color }}
+                  title={color}>
+                  {color}
+                </div>
+              </li>
+            </button>
+          ))}
+        </div>
+        <div className='flex flex-col ml-8'>
+          <h1>Board color {boardColor}:</h1>
+          <input type='color' value={boardColor}
+            onChange={handleBoardColorChange} />
+          <h1>Previous board colors:</h1>
+          {prevBoardColors.length !== 0 && prevBoardColors.map(
+            (color, index) => (
+              //can click to revert back to that color
+              <button onClick={() => setBoardColor(color)}>
+                <li key={index} className='flex flex-col'>
                   {/*little window showing the color */}
                   <div className='px-2 flex flex-col'
                     style={{ backgroundColor: color }}
@@ -189,34 +205,14 @@ const ColorPicker = () => {
                   </div>
                 </li>
               </button>
-            ))}
-          </div>
-          <div className='flex flex-col ml-8'>
-            <h1>Board color {boardColor}:</h1>
-            <input type='color' value={boardColor}
-              onChange={handleBoardColorChange} />
-            <h1>Previous board colors:</h1>
-            {prevBoardColors.length !== 0 && prevBoardColors.map(
-              (color, index) => (
-                //can click to revert back to that color
-                <button onClick={() => setBoardColor(color)}>
-                  <li key={index} className='flex flex-col'>
-                    {/*little window showing the color */}
-                    <div className='px-2 flex flex-col'
-                      style={{ backgroundColor: color }}
-                      title={color}>
-                      {color}
-                    </div>
-                  </li>
-                </button>
-              )
-            )}
-          </div>
-          <section>
-            <ResetButton />
-          </section>
+            )
+          )}
         </div>
-      </section>
+        <section>
+          <ResetButton />
+        </section>
+      </div>
+
     </main>
   );
 };
