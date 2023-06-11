@@ -62,3 +62,17 @@ export const ColorContext = createContext<ColorValues>({
     setColor: () => { }
 })
 
+export function ColorContextProvider({ children }: { children: React.ReactElement }) {
+    const [color, setColor] = useState<string>('');
+
+    useEffect(() => {
+        console.log("color changed" + color);
+    }, [color]);
+
+    return (
+        <ColorContext.Provider value={{ color, setColor }}>
+            {children}
+        </ColorContext.Provider>
+    )
+}
+

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './sparkles.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { PrevColorsContextProvider } from './context';
+import { PrevColorsContextProvider, ColorContextProvider } from './context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,8 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <PrevColorsContextProvider>
-
-      <App />
+      <ColorContextProvider>
+        <App />
+      </ColorContextProvider>
 
     </PrevColorsContextProvider>
   </React.StrictMode>
