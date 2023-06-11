@@ -5,7 +5,7 @@ import blueswitch from './audio/blueswitch.mp3';
 import redswitch from './audio/redswitch.mp3';
 import { PrevColorsContext } from './context';
 import { KeyColorsContext } from './context';
-import { SelectedColorContext } from './context';
+
 const TopBar = () => {
   return (
     <section className='crystal items-center w-full h-20 flex justify-end'>
@@ -58,35 +58,7 @@ const key_sets: { [row: string]: string[] } = {
   ]
 };
 //displays them on the screen in row order
-const MapKeys = () => {
-  const { prevColors, setPrevColors } = useContext(PrevColorsContext);
-  const { keyColors, setKeyColors } = useContext(KeyColorsContext);
-  const { selectedColor, setSelectedColor } = useContext(SelectedColorContext);
 
-  const handleKeyClick = (index: number) => {
-    const new_key_colors = [...keyColors];
-    new_key_colors[index] = selectedColor;
-    setKeyColors(new_key_colors);
-
-    if (!prevColors.includes(selectedColor)) {
-      setPrevColors([...prevColors, selectedColor]);
-    }
-  };
-
-  return (
-    <>
-      {Object.keys(key_sets).map((row) => (
-        <div className='keyboard-row' key={row}>
-          {key_sets[row].map((key, index) => (
-            <Key label={key} color={keyColors[index]}
-              onClick={() => handleKeyClick(index)}
-              key={index} />
-          ))}
-        </div>
-      ))}
-    </>
-  );
-};
 
 //for unique keys that need a little more work
 function getClassForKey(key_label: string): string {
@@ -105,7 +77,6 @@ for (let row in key_sets) {
   keys_array.push(...key_sets[row]);
 }
 
-// Adjust the Keyboard component to map over keys_array directly
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   const [keyColors, setKeyColors] = useState<string[]>(
@@ -150,17 +121,32 @@ const ResetButton = () => {
     <button onClick={handleReset}>Reset</button>
   );
 }
+interface PrevColorsSegmentsProps {
+  color: string;
+
+
+}
+/*const PrevColorsSegment: React.FC<PrevColorsSegmentsProps> = ({}) => {
+
+
+}*/
+
+const BoardColorsSegment = () => {
+
+}
 
 const ColorPicker = () => {
-  const { prevColors } = useContext(PrevColorsContext);
-  //needs context
-  const [color, setColor] = useState<string>('#000000')
-  const [boardColor, setBoardColor] = useState<string>('#242c9e')
-  const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);
-  //keys
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value)
   }
+  const { prevColors } = useContext(PrevColorsContext);
+  //key color
+  const [color, setColor] = useState<string>('#000000')
+  //board color
+  const [boardColor, setBoardColor] = useState<string>('#242c9e')
+  const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);
+  //keys
+
   //background
   const handleBoardColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBoardColor(e.target.value)
@@ -193,6 +179,7 @@ const ColorPicker = () => {
             </button>
           ))}
         </div>
+
         <div className='flex flex-col ml-8'>
           <h1>Board color {boardColor}:</h1>
           <input type='color' value={boardColor}
