@@ -23,6 +23,7 @@ which then changes the color of whatever key is clicked*/
 
 
 //split the keyboard into different segments
+//every element here has its own index, one huge array
 const key_sets: { [row: string]: string[] } = {
   top_row: [
     'Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6',
@@ -38,15 +39,34 @@ const key_sets: { [row: string]: string[] } = {
   ],
   fourth_row: [
     'CapsLk', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'
-  ]
+  ],
+  fifth_row: [
+    'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', 'Up'
+
+  ],
+  sixth_row: [
+    'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl', 'Left', 'Down', 'Right'
+  ],
 };
 //displays them on the screen in row order
 
 
 //for unique keys that need a little more work
+//Use binary search to find the key more efficiently
+
+
 function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
-  return 'key';
+  const keyClassMap: { [key: string]: string } = {
+    'F1': 'key-f1',
+    'F5': 'key-f5',
+    'F9': 'key-f9',
+    'PrtSc': 'key-prtsc',
+    'Ins': 'key-ins',
+    'Del': 'key-del',
+    'Up': 'key-up'
+  };
+  return keyClassMap[key_label] || 'key'
 }
 
 interface KeyboardProps {
@@ -55,12 +75,14 @@ interface KeyboardProps {
 };
 //Convert the key_sets object to a flat array
 export const keys_array: { label: string, row: string }[] = [];
+
 for (let row in key_sets) {
-  /*create new array of objects with the key label and row
-  and push it to the keys array. Spread so it doesn't get segmented*/
+  /*create new array of objects with the key label and row,
+  and push it to the keys array. Spread so it doesn't get segmented. 
+  So keys_array becomes an array of objects, and we can use these new 
+  properties to determine where spacings go*/
   keys_array.push(...key_sets[row].map(key => ({ label: key, row })));
 }
-
 
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
@@ -80,21 +102,20 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
   /*so we can compare the last row to the current one, 
   as the last row does not get a break*/
   let last_row = keys_array[0].row;
-
   return (
     <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
 
-      {keys_array.map((keyObj, index) => {
+      {keys_array.map((key, index) => {
         //add line breaks between rows
         let separator = null;
-        if (keyObj.row !== last_row) {
+        if (key.row !== last_row) {
           separator = <br />;
-          last_row = keyObj.row;
+          last_row = key.row;
         }
         return (
           <>
             {separator}
-            <Key label={keyObj.label} color={keyColors[index]}
+            <Key label={key.label} color={keyColors[index]}
               onClick={() => handleKeyClick(index)}
               key={index} />
           </>
@@ -113,6 +134,7 @@ interface KeyProps {
 //for mobile, rotate the whole thing 90 degrees
 const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
   const className = `${getClassForKey(label)}`
+  //uses param to call function from above
   return (
     <button style={{ backgroundColor: color }} onClick={onClick}
       className={className}>

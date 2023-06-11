@@ -11,7 +11,8 @@ body {
 }
 
 /*note that width DOES override min-width*/
-.key {
+.key,
+.key-f1 {
   margin: .4rem;
   min-width: 3vw;
   padding: 1rem 1rem 1rem 1rem;
@@ -48,4 +49,8 @@ body {
   border: .25rem solid black;
   border-radius: .5rem;
   align-self: flex-start;
+}
+
+.key-f1 {
+  margin-left: 3vw;
 }
