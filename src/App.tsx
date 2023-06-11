@@ -124,14 +124,20 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
 
   return (
     <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
-      {keys_array.map((key, index) => (
-        <Key label={key} color={keyColors[index]}
-          onClick={() => handleKeyClick(index)}
-          key={index} />
+      {/*maps all the key arrays to the keyboard*/}
+      {Object.keys(key_sets).map((row, rowIndex) => (
+        <div key={rowIndex}>
+          {key_sets[row].map((key, index) => (
+            <Key label={key} color={keyColors[rowIndex * key_sets[row].length + index]}
+              onClick={() => handleKeyClick(rowIndex * key_sets[row].length + index)}
+              key={index} />
+          ))}
+        </div>
       ))}
     </section>
   );
 };
+
 
 
 
