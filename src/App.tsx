@@ -45,14 +45,9 @@ const key_sets: { [row: string]: string[] } = {
 
   ],
   sixth_row: [
-    'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl', 'Left', 'Down', 'Right'
+    'Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Fn', '.', 'Ctrl', 'Left', 'Down', 'Right'
   ],
 };
-//displays them on the screen in row order
-
-
-//for unique keys that need a little more work
-//Use binary search to find the key more efficiently
 
 
 function getClassForKey(key_label: string): string {
@@ -64,7 +59,20 @@ function getClassForKey(key_label: string): string {
     'PrtSc': 'key-prtsc',
     'Ins': 'key-ins',
     'Del': 'key-del',
-    'Up': 'key-up'
+    'Up': 'key-up',
+    'Backspace': 'key-backspace',
+    'CapsLk': 'key-capslock',
+    'Tab': 'key-tab',
+    'Enter': 'key-enter',
+    'Shift': 'key-shift',
+    '|': 'key-backslash',
+    'Ctrl': 'key-ctrl',
+    'Space': 'key-space',
+    'Win': 'key-win',
+    'Alt': 'key-alt',
+    'Fn': 'key-fn',
+    '.': 'key-dot',
+    'Left': 'key-left',
   };
   return keyClassMap[key_label] || 'key'
 }
@@ -76,14 +84,14 @@ interface KeyboardProps {
 //Convert the key_sets object to a flat array
 export const keys_array: { label: string, row: string }[] = [];
 
-for (let row in key_sets) {
+Object.keys(key_sets).forEach(row => {
   /*create new array of objects with the key label and row,
-  and push it to the keys array. Spread so it doesn't get segmented. 
-  So keys_array becomes an array of objects, and we can use these new 
-  properties to determine where spacings go*/
+and push it to the keys array. Spread so it doesn't get segmented. 
+So keys_array becomes an array of objects, and we can use these new 
+properties to determine where spacings go*/
   keys_array.push(...key_sets[row].map(key => ({ label: key, row })));
-}
 
+});
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   const [keyColors, setKeyColors] = useState<string[]>(

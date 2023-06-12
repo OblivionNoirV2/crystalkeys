@@ -12,27 +12,79 @@ body {
 
 /*note that width DOES override min-width*/
 .key,
-.key-f1 {
-  margin: .4rem;
+.key-f1,
+.key-f5,
+.key-f9,
+.key-prtsc,
+.key-ins,
+.key-del,
+.key-up,
+.key-left {
+  margin: .1vw;
   min-width: 3vw;
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1vh;
   border-radius: .5rem;
-  border: .1rem solid black;
-  background-color: #fff;
-  color: #000;
+  border: solid .2rem transparent;
   cursor: pointer;
+  box-shadow: .5rem .5rem .5rem rgba(0, 0, 0, 0.1), .1rem .1rem .5rem rgba(0, 0, 0, 0.2);
+  text-shadow: .01rem .01rem .1rem rgba(0, 0, 0, 0.5);
+  transition: all 0.1s ease-in-out;
+}
+
+.key-up {
+  margin-left: 3.8vw;
+}
+
+.key-backspace {
+  min-width: 4.6vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+}
+
+.key-backslash {
+  min-width: 3.8vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+}
+
+.key-capslock {
+  min-width: 5vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+
+}
+
+.key-ctrl,
+.key-alt,
+.key-alt,
+.key-ctrlr,
+.key-dot,
+.key-fn,
+.key-win {
+  min-width: 4vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+  margin: .1vw;
+}
+
+.key-tab {
+  min-width: 4vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+}
+
+.key-left {
+  margin-left: .5vw;
+}
+
+.key-enter {
+  min-width: 6vw;
+  padding: 1.2vh 1vw 1.2vh 1vw;
+  border-radius: .5rem;
 }
 
 .key-text {
   font-size: 1rem;
-}
-
-/*for spaces*/
-.key-hidden {
-  border: none;
-  width: .5vw;
-  height: .5vw;
-
 }
 
 .key-hidden {
@@ -51,6 +103,38 @@ body {
   align-self: flex-start;
 }
 
+.key-shift {
+  min-width: 6.65vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+}
+
+.key-space {
+  min-width: 17vw;
+  padding: 1.2vh;
+  border-radius: .5rem;
+}
+
 .key-f1 {
   margin-left: 3vw;
+}
+
+.key-f5 {
+  margin-left: 1vw;
+}
+
+.key-f9 {
+  margin-left: 1vw;
+}
+
+.key-prtsc {
+  margin-left: .5vw;
+}
+
+.key-ins {
+  margin-left: .6vw;
+}
+
+.key-del {
+  margin-left: .6vw;
 }
