@@ -5,6 +5,8 @@ import blueswitch from './audio/blueswitch.mp3';
 import redswitch from './audio/redswitch.mp3';
 import { PrevColorsContext } from './context';
 import { KeyColorsContext } from './context';
+import { BoardColorsContext } from './context';
+import { PrevBoardColorContext } from './context';
 
 const TopBar = () => {
   return (
@@ -94,9 +96,8 @@ properties to determine where spacings go*/
 });
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
-  const [keyColors, setKeyColors] = useState<string[]>(
-    keys_array.map(() => '#fff')
-  );
+  //this needs context
+  const { keyColors, setKeyColors } = useContext(KeyColorsContext);
 
   const handleKeyClick = (index: number) => {
     const new_key_colors = [...keyColors];
@@ -111,7 +112,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
   as the last row does not get a break*/
   let last_row = keys_array[0].row;
   return (
-    <section className='keyboard ' style={{ backgroundColor: selected_board_color }}>
+    <section className='keyboard ml-8' style={{ backgroundColor: selected_board_color }}>
 
       {keys_array.map((key, index) => {
         //add line breaks between rows
@@ -121,12 +122,12 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
           last_row = key.row;
         }
         return (
-          <>
+          <span key={index}>
             {separator}
             <Key label={key.label} color={keyColors[index]}
               onClick={() => handleKeyClick(index)}
-              key={index} />
-          </>
+            />
+          </span>
         )
       })}
     </section>
@@ -158,16 +159,16 @@ interface ColorHistoryProps {
   colorHistory: string[];
   setColor: (color: string) => void;
 }
-
+//handles both board and key colors
 const ColorHistory: React.FC<ColorHistoryProps> = ({ colorHistory, setColor }) => {
   return (
     <>
       {colorHistory.length !== 0 && colorHistory.map((color, index) => (
         //switches it back to the clicked color
         <button onClick={() => setColor(color)}>
-          <li key={index} className=''>
+          <li className=''>
             {/*little window showing the color */}
-            <div className='px-2 flex flex-col'
+            <div key={index} className='px-2 flex flex-col'
               style={{ backgroundColor: color }}
               title={color}>
               {color}
@@ -195,7 +196,6 @@ const ColorInput: React.FC<ColorInputProps> = ({ color, setColor, colorHistory, 
       setColorHistory([...colorHistory, e.target.value]);
     }
   }
-
   return (
     <input type='color' value={color} onChange={handleColorChange} />
   );
@@ -204,20 +204,33 @@ const ColorInput: React.FC<ColorInputProps> = ({ color, setColor, colorHistory, 
 
 const ResetButton = () => {
   const { setPrevColors } = useContext(PrevColorsContext);
+  const { keyColors, setKeyColors } = useContext(KeyColorsContext);
+  // include board color and board color history in your context and pull it here
+  const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
+  const { boardColor, setBoardColor } = useContext(BoardColorsContext);
   const handleReset = () => {
     setPrevColors([]);
+    setKeyColors(keys_array.map(() => '#fff'));
+    // reset the board color and history of board colors here
+    setBoardColor("#242c9e"); // assuming #242c9e is the initial board color
+    setPrevBoardColors([]);
   }
+
   return (
     <button onClick={handleReset}>Reset</button>
   );
 }
 
+
 const ColorPicker = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   //needs context
   const [color, setColor] = useState<string>('#000000')
-  const [boardColor, setBoardColor] = useState<string>('#242c9e')
-  const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);
+
+  const { boardColor, setBoardColor } = useContext(BoardColorsContext);
+
+
+  const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
 
   return (
     <main className='flex flex-row parent'>

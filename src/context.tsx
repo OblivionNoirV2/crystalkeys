@@ -35,6 +35,7 @@ export const KeyColorsContext = createContext<keyColorsValues>({
     setKeyColors: () => { }
 })
 
+
 export function KeyColorsContextProvider({ children }: { children: React.ReactElement }) {
     const [keyColors, setKeyColors] = useState<string[]>(
         keys_array.map(
@@ -76,3 +77,50 @@ export function ColorContextProvider({ children }: { children: React.ReactElemen
     )
 }
 
+interface BoardColorsValues {
+    boardColor: string;
+    setBoardColor: (value: string) => void;
+}
+
+export const BoardColorsContext = createContext<BoardColorsValues>({
+    boardColor: '',
+    setBoardColor: () => { }
+})
+
+export function BoardColorsContextProvider({ children }: { children: React.ReactElement }) {
+    const [boardColor, setBoardColor] = useState<string>('#242c9e');
+
+    useEffect(() => {
+        console.log("color changed" + boardColor);
+    }, [boardColor]);
+
+    return (
+        <BoardColorsContext.Provider value={{ boardColor, setBoardColor }}>
+            {children}
+        </BoardColorsContext.Provider>
+    )
+}
+
+interface PrevBoardColorValues {
+    prevBoardColors: string[];
+    setPrevBoardColors: (value: string[]) => void;
+}
+
+export const PrevBoardColorContext = createContext<PrevBoardColorValues>({
+    prevBoardColors: [],
+    setPrevBoardColors: () => { }
+})
+
+export function PrevBoardColorContextProvider({ children }: { children: React.ReactElement }) {
+
+    const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);
+    useEffect(() => {
+        console.log("board history changed" + prevBoardColors);
+    }, [prevBoardColors]);
+
+    return (
+        <PrevBoardColorContext.Provider value={{ prevBoardColors, setPrevBoardColors }}>
+            {children}
+        </PrevBoardColorContext.Provider>
+    )
+}

@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './sparkles.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { PrevColorsContextProvider, ColorContextProvider } from './context';
+import {
+  PrevColorsContextProvider, ColorContextProvider,
+  KeyColorsContext, KeyColorsContextProvider,
+  PrevBoardColorContextProvider, BoardColorsContextProvider
+} from './context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,9 +16,14 @@ root.render(
   <React.StrictMode>
     <PrevColorsContextProvider>
       <ColorContextProvider>
-        <App />
+        <KeyColorsContextProvider>
+          <BoardColorsContextProvider>
+            <PrevBoardColorContextProvider>
+              <App />
+            </PrevBoardColorContextProvider>
+          </BoardColorsContextProvider>
+        </KeyColorsContextProvider>
       </ColorContextProvider>
-
     </PrevColorsContextProvider>
   </React.StrictMode>
 );
