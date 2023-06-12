@@ -51,6 +51,20 @@ const key_sets: { [row: string]: string[] } = {
   ],
 };
 
+function hexToRgb(hex: string) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
+    : null;
+}
+
+/*function rgbToHex(r: number, g: number, b: number) {
+  return "#" + ((1 << 24) | ((r << 16) | (g << 8) | b)).toString(16).slice(1);
+}*/
 
 function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
@@ -163,19 +177,22 @@ interface ColorHistoryProps {
 const ColorHistory: React.FC<ColorHistoryProps> = ({ colorHistory, setColor }) => {
   return (
     <>
-      {colorHistory.length !== 0 && colorHistory.map((color, index) => (
-        //switches it back to the clicked color
-        <button onClick={() => setColor(color)}>
-          <li className=''>
-            {/*little window showing the color */}
-            <div key={index} className='px-2 flex flex-col'
-              style={{ backgroundColor: color }}
-              title={color}>
-              {color}
-            </div>
-          </li>
-        </button>
-      ))}
+      {colorHistory.length !== 0 && colorHistory.map((color, index) => {
+        const rgb = hexToRgb(color);
+        return (
+          <button onClick={() => setColor(color)}>
+            <li className=''>
+              {/*little window showing the color */}
+              <div key={index} className='px-2 flex flex-col'
+                style={{ backgroundColor: color }}
+                title={color}>
+                {/*will have a toggle switch*/}
+                {color} {rgb && `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`}
+              </div>
+            </li>
+          </button>
+        )
+      })}
     </>
   );
 };
@@ -224,12 +241,8 @@ const ResetButton = () => {
 
 const ColorPicker = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
-  //needs context
   const [color, setColor] = useState<string>('#000000')
-
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
-
-
   const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
 
   return (
