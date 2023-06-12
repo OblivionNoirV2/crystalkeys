@@ -43,7 +43,7 @@ const key_sets: { [row: string]: string[] } = {
     'CapsLk', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'
   ],
   fifth_row: [
-    'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', 'Up'
+    'L-Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'R-Shift', 'Up'
 
   ],
   sixth_row: [
@@ -80,7 +80,7 @@ function getClassForKey(key_label: string): string {
     'CapsLk': 'key-capslock',
     'Tab': 'key-tab',
     'Enter': 'key-enter',
-    'Shift': 'key-shift',
+    'L-Shift': 'key-l-shift',
     '|': 'key-backslash',
     'Ctrl': 'key-ctrl',
     'Space': 'key-space',
@@ -89,6 +89,7 @@ function getClassForKey(key_label: string): string {
     'Fn': 'key-fn',
     '.': 'key-dot',
     'Left': 'key-left',
+    'R-Shift': 'key-r-shift',
   };
   return keyClassMap[key_label] || 'key'
 }

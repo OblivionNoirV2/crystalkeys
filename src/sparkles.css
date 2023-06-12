@@ -20,9 +20,25 @@ body {
 .key-ins,
 .key-del,
 .key-up,
-.key-left {
+.key-left,
+.key-ctrl,
+.key-alt,
+.key-ctrlr,
+.key-dot,
+.key-fn,
+.key-win,
+.key-capslock,
+.key-tab,
+.key-r-shift,
+.key-l-shift,
+.key-space,
+.key-enter,
+.key-backslash,
+.key-backspace,
+.key-r-shift {
   margin: .1vw;
   min-width: 3vw;
+
   padding: 1vh;
   border-radius: .5rem;
   border: solid .2rem transparent;
@@ -33,40 +49,25 @@ body {
 }
 
 .key-up {
-  margin-left: 3.8vw;
+  margin-left: 3.6vw;
 }
 
 .key-backspace {
-  min-width: 4.6vw;
-  padding: 1.2vh;
-  border-radius: .5rem;
+  min-width: 4.5vw;
 }
 
+
 .key-backslash {
-  min-width: 3.8vw;
-  padding: 1.2vh;
-  border-radius: .5rem;
+  min-width: 3.5vw;
+
 }
 
 .key-capslock {
   min-width: 5vw;
-  padding: 1.2vh;
-  border-radius: .5rem;
 
 }
 
-.key-ctrl,
-.key-alt,
-.key-alt,
-.key-ctrlr,
-.key-dot,
-.key-fn,
-.key-win {
-  min-width: 4vw;
-  padding: 1.2vh;
-  border-radius: .5rem;
-  margin: .1vw;
-}
+
 
 .key-tab {
   min-width: 4vw;
@@ -74,12 +75,16 @@ body {
   border-radius: .5rem;
 }
 
-.key-left {
-  margin-left: .5vw;
+.key-ctrl,
+.key-alt,
+.key-win,
+.key-fn,
+.key-dot {
+  min-width: 3.65vw;
 }
 
 .key-enter {
-  min-width: 6vw;
+  min-width: 5.8vw;
   padding: 1.2vh 1vw 1.2vh 1vw;
   border-radius: .5rem;
 }
@@ -88,13 +93,13 @@ body {
   font-size: 1rem;
 }
 
-.key-hidden {
-  border: none;
-  background-color: transparent;
-}
 
 .key:active {
   transform: scale(0.95);
+}
+
+.key-left {
+  margin-left: .5vw;
 }
 
 /*align self prevents auto scaling with the prev colors columns*/
@@ -104,15 +109,21 @@ body {
   align-self: flex-start;
 }
 
-.key-shift {
+.key-l-shift {
   min-width: 6.65vw;
   padding: 1.2vh;
   border-radius: .5rem;
 }
 
+.key-r-shift {
+  min-width: 7.5vw;
+
+  border-radius: .5rem;
+}
+
 .key-space {
-  min-width: 17vw;
-  padding: 1.2vh;
+  min-width: 20vw;
+
   border-radius: .5rem;
 }
 
@@ -138,4 +149,8 @@ body {
 
 .key-del {
   margin-left: .6vw;
+}
+
+.key-dot {
+  min-width: 3vw;
 }
