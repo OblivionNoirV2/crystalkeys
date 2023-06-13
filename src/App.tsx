@@ -7,6 +7,7 @@ import { PrevColorsContext } from './context';
 import { KeyColorsContext } from './context';
 import { BoardColorsContext } from './context';
 import { PrevBoardColorContext } from './context';
+import { KeyTypeContext } from './context';
 
 const TopBar = () => {
   return (
@@ -108,7 +109,7 @@ properties to determine where spacings go*/
 });
 const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
-  //this needs context
+
   const { keyColors, setKeyColors } = useContext(KeyColorsContext);
 
   const handleKeyClick = (index: number) => {
@@ -154,10 +155,21 @@ interface KeyProps {
 //todo: flip between hex/rgb
 //for mobile, rotate the whole thing 90 degrees
 const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
+  const { keyType, setKeyType } = useContext(KeyTypeContext);
+  let key_audio = new Audio();
   const className = `${getClassForKey(label)}`
   //uses param to call function from above
+  function playSound() {
+    if (keyType === 'blue') {
+      key_audio.src = blueswitch;
+      key_audio.play();
+    } else {
+      key_audio.src = redswitch;
+      key_audio.play();
+    }
+  }
   return (
-    <button style={{ backgroundColor: color }} onClick={onClick}
+    <button style={{ backgroundColor: color }} onClick={() => { onClick(); playSound(); }}
       className={className}>
       <div className='key-text'>
         {label}
@@ -310,16 +322,27 @@ interface SoundSelectProps {
   isDark: boolean;
 }
 const SoundSelect: React.FC<SoundSelectProps> = ({ isDark }) => {
+  const { keyType, setKeyType } = useContext(KeyTypeContext);
   useEffect(() => {
     console.log(isDark);
 
   }, [isDark]);
+
+  useEffect(() => {
+    console.log(keyType);
+  }, [keyType]);
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.target.value !== "" && setKeyType(e.target.value);
+  }
   return (
     <select className={
       isDark ? "text-white bg-black border border-white mt-4" :
         "text-black bg-white border border-black mt-4"
-    }>
-      <option value="default" selected>Choose a key type...</option>
+    }
+      onChange={handleSelectChange}
+      defaultValue="">
+      <option value="">Choose a switch type...</option>
       <option value="red">Red</option>
       <option value="blue">Blue</option>
     </select>

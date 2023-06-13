@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {
   PrevColorsContextProvider, ColorContextProvider,
   KeyColorsContext, KeyColorsContextProvider,
-  PrevBoardColorContextProvider, BoardColorsContextProvider
+  PrevBoardColorContextProvider, BoardColorsContextProvider, KeyTypeContextProvider
 } from './context';
 
 const root = ReactDOM.createRoot(
@@ -19,7 +19,9 @@ root.render(
         <KeyColorsContextProvider>
           <BoardColorsContextProvider>
             <PrevBoardColorContextProvider>
-              <App />
+              <KeyTypeContextProvider>
+                <App />
+              </KeyTypeContextProvider>
             </PrevBoardColorContextProvider>
           </BoardColorsContextProvider>
         </KeyColorsContextProvider>

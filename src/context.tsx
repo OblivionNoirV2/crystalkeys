@@ -124,3 +124,27 @@ export function PrevBoardColorContextProvider({ children }: { children: React.Re
         </PrevBoardColorContext.Provider>
     )
 }
+
+interface KeyTypeValues {
+    keyType: string;
+    setKeyType: (value: string) => void;
+}
+
+export const KeyTypeContext = createContext<KeyTypeValues>({
+    keyType: '',
+    setKeyType: () => { }
+})
+
+export function KeyTypeContextProvider({ children }: { children: React.ReactElement }) {
+    const [keyType, setKeyType] = useState<string>('red');
+
+    useEffect(() => {
+        console.log("key type changed" + keyType);
+    }, [keyType]);
+
+    return (
+        <KeyTypeContext.Provider value={{ keyType, setKeyType }}>
+            {children}
+        </KeyTypeContext.Provider>
+    )
+}
