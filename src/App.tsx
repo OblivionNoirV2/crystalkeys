@@ -62,9 +62,6 @@ function hexToRgb(hex: string) {
     : null;
 }
 
-/*function rgbToHex(r: number, g: number, b: number) {
-  return "#" + ((1 << 24) | ((r << 16) | (g << 8) | b)).toString(16).slice(1);
-}*/
 
 function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
@@ -174,20 +171,27 @@ interface ColorHistoryProps {
   colorHistory: string[];
   setColor: (color: string) => void;
   isRGB: boolean;
+  isDarkMode: boolean;
 }
 //handles both board and key colors
 const ColorHistory: React.FC<ColorHistoryProps> = ({
-  colorHistory, setColor, isRGB }) => {
+  colorHistory, setColor, isRGB, isDarkMode }) => {
   return (
     <>
       {colorHistory.length !== 0 && colorHistory.map((color, index) => {
         const rgb = hexToRgb(color);
         return (
           <button onClick={() => setColor(color)}>
-            <li className=''>
+            <li className={
+              isDarkMode ? 'text-white' : 'text-black'
+            }>
               {/*little window showing the color 
               min-w prevents expanding when rgb*/}
-              <div key={index} className='px-2 flex flex-col min-w-[14rem]'
+              <div key={index} className={
+                isDarkMode ? 'border border-white px-2 flex flex-col min-w-[14rem]'
+                  : 'border border-black px-2 flex flex-col min-w-[14rem]'
+              }
+
                 style={{ backgroundColor: color }}
                 title={color}>
                 {
@@ -228,8 +232,10 @@ const ColorInput: React.FC<ColorInputProps> = ({ color, setColor,
   );
 };
 
-
-const ResetButton = () => {
+interface ResetButtonProps {
+  isDark: boolean;
+}
+const ResetButton: React.FC<ResetButtonProps> = ({ isDark }) => {
   const { setPrevColors } = useContext(PrevColorsContext);
   const { keyColors, setKeyColors } = useContext(KeyColorsContext);
   // include board color and board color history in your context and pull it here
@@ -244,15 +250,19 @@ const ResetButton = () => {
   }
 
   return (
-    <button onClick={handleReset}>Reset</button>
+    <button onClick={handleReset}
+      className={
+        isDark ? 'text-white' : 'text-black'
+      }>Reset</button>
   );
 }
 interface HexRGBSwitchProps {
   isRGB: boolean;
   setIsRGB: (isRGB: boolean) => void;
+  isDark: boolean;
 }
 
-const HexRGBSwitch: React.FC<HexRGBSwitchProps> = ({ isRGB, setIsRGB }) => {
+const HexRGBSwitch: React.FC<HexRGBSwitchProps> = ({ isRGB, setIsRGB, isDark }) => {
 
   function handleColorCodeSwitch() {
     setIsRGB(!isRGB);
@@ -265,11 +275,39 @@ const HexRGBSwitch: React.FC<HexRGBSwitchProps> = ({ isRGB, setIsRGB }) => {
   return (
     <label className="switch">
       <input type="checkbox" checked={isRGB} onChange={handleColorCodeSwitch} />
-      <span className="slider round"></span>
+      <span className={
+        isDark ? "slider slider-dark round" : "slider round "
+      }></span>
     </label>
   )
 }
+interface DarkLightSwitchProps {
+  isDark: boolean;
+  setIsDark: (isDark: boolean) => void;
+}
+const DarkLightSwitch: React.FC<DarkLightSwitchProps> = ({ isDark, setIsDark }) => {
+  useEffect(() => {
+    if (isDark) {
+      document.body.style.backgroundColor = "#2e2e2e";
+    } else {
+      document.body.style.backgroundColor = "#ffffff";
+    }
+    console.log(isDark);
+  }, [isDark]);
 
+  const handleDarkLightSwitch = () => {
+    setIsDark(!isDark);
+  }
+  return (
+    <label className="switch">
+      <input type="checkbox" checked={isDark} onChange={handleDarkLightSwitch} />
+      <span className={
+        isDark ? "slider slider-dark round" : "slider round "
+      }
+      ></span>
+    </label>
+  )
+}
 
 const ColorPicker = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
@@ -277,48 +315,68 @@ const ColorPicker = () => {
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
   const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
   const [isRGB, setIsRGB] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
   return (
     <main className='flex flex-row parent'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
       <div className='flex ml-8'>
         <div className='flex flex-col'>
-          <h1>Key color: {
-            isRGB ? (
-              rgb !== null &&
-              `(${rgb.r}, ${rgb.g}, ${rgb.b})`
-            )
-              : color
-          } </h1>
+          <h1 className={
+            isDark ? "text-white" : "text-black"
+          }>Key color: {
+              isRGB ? (
+                rgb !== null &&
+                `(${rgb.r}, ${rgb.g}, ${rgb.b})`
+              )
+                : color
+            } </h1>
           <ColorInput color={color} setColor={setColor} colorHistory={prevColors} setColorHistory={setPrevColors} />
-          <h1>Previous key colors:</h1>
+          <h1 className={
+            isDark ? "text-white" : "text-black"
+          }>Previous key colors:</h1>
           <ColorHistory colorHistory={prevColors} setColor={setColor}
-            isRGB={isRGB} />
+            isRGB={isRGB} isDarkMode={isDark} />
         </div>
         <div className='flex flex-col ml-8'>
-          <h1>Board color:
-            {
+          <h1 className={
+            isDark ? "text-white" : "text-black"
+          }>Board color: {
               isRGB ? (
-                rgb !== null
-                  ? `(${rgb.r}, ${rgb.g}, ${rgb.b})`
-                  : 'Color not available'
+                rgb !== null &&
+                `(${rgb.r}, ${rgb.g}, ${rgb.b})`
+
               )
                 : boardColor
             }
 
           </h1>
           <ColorInput color={boardColor} setColor={setBoardColor} colorHistory={prevBoardColors} setColorHistory={setPrevBoardColors} />
-          <h1>Previous board colors:</h1>
+
+          <h1 className={
+            isDark ? "text-white" : "text-black"
+            //prev colors will be white if dark mode is on
+          }>Previous board colors:</h1>
           <ColorHistory colorHistory={prevBoardColors}
-            setColor={setBoardColor} isRGB={isRGB} />
+            setColor={setBoardColor} isRGB={isRGB} isDarkMode={isDark} />
         </div>
         <section>
-          <ResetButton />
+          <ResetButton isDark={isDark} />
         </section>
         <section className='flex flex-row ml-8'>
-          <h4 className='mr-2'>Hex</h4>
-          <HexRGBSwitch isRGB={isRGB} setIsRGB={setIsRGB} />
-          <h4 className='ml-2'>RGB</h4>
+          <h4 className={
+            isDark ? "text-white mr-2" : "text-black mr-2"
+          }>Hex</h4>
+          <HexRGBSwitch isRGB={isRGB} setIsRGB={setIsRGB} isDark={isDark} />
+          <h4 className={
+            isDark ? "text-white mr-2" : "text-black mr-2"
+          }>RGB</h4>
+        </section>
+        <section className='flex flex-col ml-8'>
+          <h4 className={
+            isDark ? "text-white mr-2" : "text-black mr-2"
+          }>Dark mode</h4>
+          <DarkLightSwitch isDark={isDark} setIsDark={setIsDark} />
         </section>
       </div>
     </main>

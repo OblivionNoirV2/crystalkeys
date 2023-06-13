@@ -2,9 +2,10 @@
   background: rgba(148, 147, 147, 0.5);
   box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(.8rem);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(1rem);
+  border: .5rem solid rgba(255, 255, 255, 0.3);
 }
+
 
 body {
   background-color: rgba(255, 255, 255, 0.2);
@@ -70,7 +71,7 @@ body {
 
 .key-tab {
   min-width: 4vw;
-  padding: 1.2vh;
+
   border-radius: .5rem;
 }
 
@@ -84,7 +85,7 @@ body {
 
 .key-enter {
   min-width: 5.8vw;
-  padding: 1.2vh 1vw 1.2vh 1vw;
+
   border-radius: .5rem;
 }
 
@@ -179,21 +180,27 @@ body {
   transition: .4s;
 }
 
+.slider-dark {
+  background-color: #fefbfb;
+}
+
 .slider:before {
   position: absolute;
   content: "";
   height: 2rem;
   width: 2rem;
   bottom: .1rem;
+  top: .05rem;
   left: .1rem;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
 }
 
-input {
+.slider-dark:before {
   background-color: black;
 }
+
 
 
 input:checked+.slider:before {
