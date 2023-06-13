@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './sparkles.css';
 import './App.css';
 import blueswitch from './audio/blueswitch.mp3';
@@ -238,6 +238,28 @@ const ResetButton = () => {
     <button onClick={handleReset}>Reset</button>
   );
 }
+interface HexRGBSwitchProps {
+  isRGB: boolean;
+  setIsRGB: (isRGB: boolean) => void;
+}
+
+const HexRGBSwitch: React.FC<HexRGBSwitchProps> = ({ isRGB, setIsRGB }) => {
+
+  function handleColorCodeSwitch() {
+    setIsRGB(!isRGB);
+  }
+
+  useEffect(() => {
+    console.log(isRGB);
+  }, [isRGB]);
+
+  return (
+    <label className="switch">
+      <input type="checkbox" checked={isRGB} onChange={handleColorCodeSwitch} />
+      <span className="slider round"></span>
+    </label>
+  )
+}
 
 
 const ColorPicker = () => {
@@ -245,6 +267,7 @@ const ColorPicker = () => {
   const [color, setColor] = useState<string>('#000000')
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
   const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
+  const [isRGB, setIsRGB] = useState(false);
 
   return (
     <main className='flex flex-row parent'>
@@ -264,6 +287,11 @@ const ColorPicker = () => {
         </div>
         <section>
           <ResetButton />
+        </section>
+        <section className='flex flex-row ml-8'>
+          <h4 className='mr-2'>Hex</h4>
+          <HexRGBSwitch isRGB={isRGB} setIsRGB={setIsRGB} />
+          <h4 className='ml-2'>RGB</h4>
         </section>
       </div>
     </main>

@@ -11,7 +11,7 @@ body {
   backdrop-filter: blur(1rem);
 }
 
-/*note that width DOES override min-width*/
+
 .key,
 .key-f1,
 .key-f5,
@@ -38,7 +38,6 @@ body {
 .key-r-shift {
   margin: .1vw;
   min-width: 3vw;
-
   padding: 1vh;
   border-radius: .5rem;
   border: solid .2rem transparent;
@@ -111,7 +110,6 @@ body {
 
 .key-l-shift {
   min-width: 6.65vw;
-  padding: 1.2vh;
   border-radius: .5rem;
 }
 
@@ -123,7 +121,6 @@ body {
 
 .key-space {
   min-width: 20vw;
-
   border-radius: .5rem;
 }
 
@@ -153,4 +150,62 @@ body {
 
 .key-dot {
   min-width: 3vw;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000000;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 2rem;
+  width: 2rem;
+  bottom: .1rem;
+  left: .1rem;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input {
+  background-color: black;
+}
+
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(1.5rem);
+  -ms-transform: translateX(1.5rem);
+  transform: translateX(1.5rem);
+}
+
+.slider.round {
+  border-radius: 5rem;
+}
+
+.slider.round:before {
+  border-radius: 5rem;
 }
