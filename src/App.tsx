@@ -107,45 +107,8 @@ properties to determine where spacings go*/
   keys_array.push(...key_sets[row].map(key => ({ label: key, row })));
 
 });
-const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
-  const { prevColors, setPrevColors } = useContext(PrevColorsContext);
+//try making it appear under the controls on mobile? 
 
-  const { keyColors, setKeyColors } = useContext(KeyColorsContext);
-
-  const handleKeyClick = (index: number) => {
-    const new_key_colors = [...keyColors];
-    new_key_colors[index] = selected_color;
-    setKeyColors(new_key_colors);
-
-    if (!prevColors.includes(selected_color)) {
-      setPrevColors([...prevColors, selected_color]);
-    }
-  };
-  /*so we can compare the last row to the current one, 
-  as the last row does not get a break*/
-  let last_row = keys_array[0].row;
-  return (
-    <section className='keyboard ml-8' style={{ backgroundColor: selected_board_color }}>
-
-      {keys_array.map((key, index) => {
-        //add line breaks between rows
-        let separator = null;
-        if (key.row !== last_row) {
-          separator = <br />;
-          last_row = key.row;
-        }
-        return (
-          <span key={index}>
-            {separator}
-            <Key label={key.label} color={keyColors[index]}
-              onClick={() => handleKeyClick(index)}
-            />
-          </span>
-        )
-      })}
-    </section>
-  );
-};
 
 interface KeyProps {
   label: string;
@@ -153,7 +116,7 @@ interface KeyProps {
   onClick: () => void;
 };
 
-//for mobile, rotate the whole thing 90 degrees
+
 const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
   const { keyType, setKeyType } = useContext(KeyTypeContext);
   let key_audio = new Audio();
@@ -247,6 +210,7 @@ const ColorInput: React.FC<ColorInputProps> = ({ color, setColor,
 interface ResetButtonProps {
   isDark: boolean;
 }
+//this needs to reset the select as well
 const ResetButton: React.FC<ResetButtonProps> = ({ isDark }) => {
   const { setPrevColors } = useContext(PrevColorsContext);
   const { keyColors, setKeyColors } = useContext(KeyColorsContext);
@@ -350,7 +314,46 @@ const SoundSelect: React.FC<SoundSelectProps> = ({ isDark }) => {
       <option value="blue">Blue</option>
     </select>
   )
-}
+};
+const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_color }) => {
+  const { prevColors, setPrevColors } = useContext(PrevColorsContext);
+
+  const { keyColors, setKeyColors } = useContext(KeyColorsContext);
+
+  const handleKeyClick = (index: number) => {
+    const new_key_colors = [...keyColors];
+    new_key_colors[index] = selected_color;
+    setKeyColors(new_key_colors);
+
+    if (!prevColors.includes(selected_color)) {
+      setPrevColors([...prevColors, selected_color]);
+    }
+  };
+  /*so we can compare the last row to the current one, 
+  as the last row does not get a break*/
+  let last_row = keys_array[0].row;
+  return (
+    <section className='keyboard whitespace-nowrap mx-auto' style={{ backgroundColor: selected_board_color }}>
+
+      {keys_array.map((key, index) => {
+        //add line breaks between rows
+        let separator = null;
+        if (key.row !== last_row) {
+          separator = <br />;
+          last_row = key.row;
+        }
+        return (
+          <span key={index}>
+            {separator}
+            <Key label={key.label} color={keyColors[index]}
+              onClick={() => handleKeyClick(index)}
+            />
+          </span>
+        )
+      })}
+    </section>
+  );
+};
 const Controls = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
@@ -360,9 +363,10 @@ const Controls = () => {
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
   return (
-    <main className='flex flex-row parent mt-4'>
+    <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 
+    -rotate-90 lg:rotate-0'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <div className='flex ml-8'>
+      <div className='flex flex-row mx-auto justify-center mt-4 '>
         <div className='flex flex-col min-w-[14rem]'>
           <h1 className={
             isDark ? "text-white" : "text-black"
@@ -391,7 +395,6 @@ const Controls = () => {
               )
                 : boardColor
             }
-
           </h1>
           <ColorInput color={boardColor} setColor={setBoardColor} colorHistory={prevBoardColors} setColorHistory={setPrevBoardColors} />
 
@@ -402,10 +405,10 @@ const Controls = () => {
           <ColorHistory colorHistory={prevBoardColors}
             setColor={setBoardColor} isRGB={isRGB} isDarkMode={isDark} />
         </div>
-        <section>
+        <section >
           <ResetButton isDark={isDark} />
         </section>
-        <section className='flex flex-col ml-8'>
+        <section className='flex flex-col  ml-8'>
           <section className='flex flex-row ml-8'>
             <h4 className={
               isDark ? "text-white mr-2" : "text-black mr-2"

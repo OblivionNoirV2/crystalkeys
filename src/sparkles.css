@@ -40,13 +40,16 @@ body {
   margin: .1vw;
   min-width: 3vw;
   padding: 1vh;
-  border-radius: .5rem;
+  border-radius: .75rem;
   border: solid .2rem transparent;
   cursor: pointer;
   box-shadow: .5rem .5rem .5rem rgba(0, 0, 0, 0.1), .1rem .1rem .5rem rgba(0, 0, 0, 0.2);
   text-shadow: .01rem .01rem .1rem rgba(0, 0, 0, 0.5);
   transition: all 0.1s ease-in-out;
+
 }
+
+
 
 .key-up {
   margin-left: 3.6vw;
@@ -239,3 +242,7 @@ input:checked+.slider:before {
 .slider.round:before {
   border-radius: 5rem;
 }
+
+/*only apply on mobile*/
+
+/* For screens smaller than 768px */
