@@ -94,7 +94,30 @@ body {
 }
 
 
-.key:active {
+.key:active,
+.key-f1:active,
+.key-f5:active,
+.key-f9:active,
+.key-prtsc:active,
+.key-ins:active,
+.key-del:active,
+.key-up:active,
+.key-left:active,
+.key-ctrl:active,
+.key-alt:active,
+.key-ctrlr:active,
+.key-dot:active,
+.key-fn:active,
+.key-win:active,
+.key-capslock:active,
+.key-tab:active,
+.key-r-shift:active,
+.key-l-shift:active,
+.key-space:active,
+.key-enter:active,
+.key-backslash:active,
+.key-backspace:active,
+.key-r-shift:active {
   transform: scale(0.95);
 }
 

@@ -152,13 +152,13 @@ interface KeyProps {
   color: string;
   onClick: () => void;
 };
-//todo: flip between hex/rgb
+
 //for mobile, rotate the whole thing 90 degrees
 const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
   const { keyType, setKeyType } = useContext(KeyTypeContext);
   let key_audio = new Audio();
   const className = `${getClassForKey(label)}`
-  //uses param to call function from above
+
   function playSound() {
     if (keyType === 'blue') {
       key_audio.src = blueswitch;
@@ -252,17 +252,20 @@ const ResetButton: React.FC<ResetButtonProps> = ({ isDark }) => {
   const { keyColors, setKeyColors } = useContext(KeyColorsContext);
   const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
+  const { keyType, setKeyType } = useContext(KeyTypeContext);
   const handleReset = () => {
     setPrevColors([]);
     setKeyColors(keys_array.map(() => '#fff'));
     setBoardColor("#242c9e"); //default board color
     setPrevBoardColors([]);
+    setKeyType('red');
   }
 
   return (
     <button onClick={handleReset}
       className={
-        isDark ? 'text-white' : 'text-black'
+        isDark ? 'text-white border border-white px-4 py-2 rounded-xl' :
+          'text-black border border-black px-4 py-2 rounded-xl'
       }>Reset</button>
   );
 }
@@ -357,10 +360,10 @@ const Controls = () => {
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
   return (
-    <main className='flex flex-row parent'>
+    <main className='flex flex-row parent mt-4'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
       <div className='flex ml-8'>
-        <div className='flex flex-col'>
+        <div className='flex flex-col min-w-[14rem]'>
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Key color: {
@@ -377,7 +380,7 @@ const Controls = () => {
           <ColorHistory colorHistory={prevColors} setColor={setColor}
             isRGB={isRGB} isDarkMode={isDark} />
         </div>
-        <div className='flex flex-col ml-8'>
+        <div className='flex flex-col ml-8 min-w-[14rem]'>
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Board color: {
