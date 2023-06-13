@@ -238,14 +238,12 @@ interface ResetButtonProps {
 const ResetButton: React.FC<ResetButtonProps> = ({ isDark }) => {
   const { setPrevColors } = useContext(PrevColorsContext);
   const { keyColors, setKeyColors } = useContext(KeyColorsContext);
-  // include board color and board color history in your context and pull it here
   const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
   const handleReset = () => {
     setPrevColors([]);
     setKeyColors(keys_array.map(() => '#fff'));
-    // reset the board color and history of board colors here
-    setBoardColor("#242c9e"); // assuming #242c9e is the initial board color
+    setBoardColor("#242c9e"); //default board color
     setPrevBoardColors([]);
   }
 
@@ -308,8 +306,26 @@ const DarkLightSwitch: React.FC<DarkLightSwitchProps> = ({ isDark, setIsDark }) 
     </label>
   )
 }
+interface SoundSelectProps {
+  isDark: boolean;
+}
+const SoundSelect: React.FC<SoundSelectProps> = ({ isDark }) => {
+  useEffect(() => {
+    console.log(isDark);
 
-const ColorPicker = () => {
+  }, [isDark]);
+  return (
+    <select className={
+      isDark ? "text-white bg-black border border-white mt-4" :
+        "text-black bg-white border border-black mt-4"
+    }>
+      <option value="default" selected>Choose a key type...</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+    </select>
+  )
+}
+const Controls = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
@@ -363,20 +379,23 @@ const ColorPicker = () => {
         <section>
           <ResetButton isDark={isDark} />
         </section>
-        <section className='flex flex-row ml-8'>
-          <h4 className={
-            isDark ? "text-white mr-2" : "text-black mr-2"
-          }>Hex</h4>
-          <HexRGBSwitch isRGB={isRGB} setIsRGB={setIsRGB} isDark={isDark} />
-          <h4 className={
-            isDark ? "text-white mr-2" : "text-black mr-2"
-          }>RGB</h4>
-        </section>
         <section className='flex flex-col ml-8'>
-          <h4 className={
-            isDark ? "text-white mr-2" : "text-black mr-2"
-          }>Dark mode</h4>
-          <DarkLightSwitch isDark={isDark} setIsDark={setIsDark} />
+          <section className='flex flex-row ml-8'>
+            <h4 className={
+              isDark ? "text-white mr-2" : "text-black mr-2"
+            }>Hex</h4>
+            <HexRGBSwitch isRGB={isRGB} setIsRGB={setIsRGB} isDark={isDark} />
+            <h4 className={
+              isDark ? "text-white ml-2" : "text-black ml-2"
+            }>RGB</h4>
+          </section>
+          <section className='flex flex-row ml-8'>
+            <h4 className={
+              isDark ? "text-white mr-2" : "text-black mr-2"
+            }>Dark mode</h4>
+            <DarkLightSwitch isDark={isDark} setIsDark={setIsDark} />
+          </section>
+          <SoundSelect isDark={isDark} />
         </section>
       </div>
     </main>
@@ -391,7 +410,7 @@ function App() {
         <source src={redswitch} type='audio/mpeg' />
       </audio>
       <TopBar />
-      <ColorPicker />
+      <Controls />
     </main>
   );
 };
