@@ -173,9 +173,11 @@ const Key: React.FC<KeyProps> = ({ label, color, onClick }) => {
 interface ColorHistoryProps {
   colorHistory: string[];
   setColor: (color: string) => void;
+  isRGB: boolean;
 }
 //handles both board and key colors
-const ColorHistory: React.FC<ColorHistoryProps> = ({ colorHistory, setColor }) => {
+const ColorHistory: React.FC<ColorHistoryProps> = ({
+  colorHistory, setColor, isRGB }) => {
   return (
     <>
       {colorHistory.length !== 0 && colorHistory.map((color, index) => {
@@ -183,12 +185,18 @@ const ColorHistory: React.FC<ColorHistoryProps> = ({ colorHistory, setColor }) =
         return (
           <button onClick={() => setColor(color)}>
             <li className=''>
-              {/*little window showing the color */}
-              <div key={index} className='px-2 flex flex-col'
+              {/*little window showing the color 
+              min-w prevents expanding when rgb*/}
+              <div key={index} className='px-2 flex flex-col min-w-[14rem]'
                 style={{ backgroundColor: color }}
                 title={color}>
-                {/*will have a toggle switch*/}
-                {color} {rgb && `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`}
+                {
+                  isRGB ?
+                    rgb !== null &&
+                    `(${rgb.r}, ${rgb.g}, ${rgb.b})` :
+                    color
+                }
+
               </div>
             </li>
           </button>
@@ -205,7 +213,8 @@ interface ColorInputProps {
   setColorHistory: (colorHistory: string[]) => void;
 }
 
-const ColorInput: React.FC<ColorInputProps> = ({ color, setColor, colorHistory, setColorHistory }) => {
+const ColorInput: React.FC<ColorInputProps> = ({ color, setColor,
+  colorHistory, setColorHistory }) => {
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColor(e.target.value)
 
@@ -268,22 +277,40 @@ const ColorPicker = () => {
   const { boardColor, setBoardColor } = useContext(BoardColorsContext);
   const { prevBoardColors, setPrevBoardColors } = useContext(PrevBoardColorContext);
   const [isRGB, setIsRGB] = useState(false);
-
+  const rgb = hexToRgb(color);
   return (
     <main className='flex flex-row parent'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
       <div className='flex ml-8'>
         <div className='flex flex-col'>
-          <h1>Key color: {color} </h1>
+          <h1>Key color: {
+            isRGB ? (
+              rgb !== null &&
+              `(${rgb.r}, ${rgb.g}, ${rgb.b})`
+            )
+              : color
+          } </h1>
           <ColorInput color={color} setColor={setColor} colorHistory={prevColors} setColorHistory={setPrevColors} />
           <h1>Previous key colors:</h1>
-          <ColorHistory colorHistory={prevColors} setColor={setColor} />
+          <ColorHistory colorHistory={prevColors} setColor={setColor}
+            isRGB={isRGB} />
         </div>
         <div className='flex flex-col ml-8'>
-          <h1>Board color {boardColor}:</h1>
+          <h1>Board color:
+            {
+              isRGB ? (
+                rgb !== null
+                  ? `(${rgb.r}, ${rgb.g}, ${rgb.b})`
+                  : 'Color not available'
+              )
+                : boardColor
+            }
+
+          </h1>
           <ColorInput color={boardColor} setColor={setBoardColor} colorHistory={prevBoardColors} setColorHistory={setPrevBoardColors} />
           <h1>Previous board colors:</h1>
-          <ColorHistory colorHistory={prevBoardColors} setColor={setBoardColor} />
+          <ColorHistory colorHistory={prevBoardColors}
+            setColor={setBoardColor} isRGB={isRGB} />
         </div>
         <section>
           <ResetButton />
@@ -297,7 +324,6 @@ const ColorPicker = () => {
     </main>
   );
 };
-
 
 function App() {
   return (
