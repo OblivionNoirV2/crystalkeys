@@ -13,33 +13,10 @@ body {
 }
 
 
-.key,
-.key-f1,
-.key-f5,
-.key-f9,
-.key-prtsc,
-.key-ins,
-.key-del,
-.key-up,
-.key-left,
-.key-ctrl,
-.key-alt,
-.key-ctrlr,
-.key-dot,
-.key-fn,
-.key-win,
-.key-capslock,
-.key-tab,
-.key-r-shift,
-.key-l-shift,
-.key-space,
-.key-enter,
-.key-backslash,
-.key-backspace,
-.key-r-shift {
-  margin: .1vw;
-  min-width: 3vw;
-  padding: 1vh;
+.key {
+  margin: 2px;
+  min-width: 65px;
+  padding: 10px;
   border-radius: .75rem;
   border: solid .2rem transparent;
   cursor: pointer;
@@ -49,31 +26,38 @@ body {
 
 }
 
+.key-end {
+  min-width: 70px;
+}
 
+.key-scroll-lock {
+  min-width: 70px;
+}
 
 .key-up {
-  margin-left: 3.6vw;
+  margin-left: 110px;
 }
 
 .key-backspace {
-  min-width: 4.5vw;
+  min-width: 45px;
+  margin-right: 45px;
 }
 
 
 .key-backslash {
-  min-width: 3.5vw;
+  min-width: 75px;
+  margin-right: 43px;
 
 }
 
 .key-capslock {
-  min-width: 5vw;
+  min-width: 110px;
 
 }
 
 
-
 .key-tab {
-  min-width: 4vw;
+  min-width: 90px;
 
   border-radius: .5rem;
 }
@@ -83,11 +67,11 @@ body {
 .key-win,
 .key-fn,
 .key-dot {
-  min-width: 3.65vw;
+  min-width: 75px;
 }
 
 .key-enter {
-  min-width: 5.8vw;
+  min-width: 125px;
 
   border-radius: .5rem;
 }
@@ -97,35 +81,12 @@ body {
 }
 
 
-.key:active,
-.key-f1:active,
-.key-f5:active,
-.key-f9:active,
-.key-prtsc:active,
-.key-ins:active,
-.key-del:active,
-.key-up:active,
-.key-left:active,
-.key-ctrl:active,
-.key-alt:active,
-.key-ctrlr:active,
-.key-dot:active,
-.key-fn:active,
-.key-win:active,
-.key-capslock:active,
-.key-tab:active,
-.key-r-shift:active,
-.key-l-shift:active,
-.key-space:active,
-.key-enter:active,
-.key-backslash:active,
-.key-backspace:active,
-.key-r-shift:active {
+.key:active {
   transform: scale(0.95);
 }
 
 .key-left {
-  margin-left: .5vw;
+  margin-left: 40px;
 }
 
 /*align self prevents auto scaling with the prev colors columns*/
@@ -133,57 +94,63 @@ body {
   border: .25rem solid black;
   border-radius: .5rem;
   align-self: flex-start;
+  width: 1300px;
 }
 
-.key-l-shift {
-  min-width: 6.65vw;
+.key-l-shift,
+.key-r-shift {
+  min-width: 152px;
   border-radius: .5rem;
 }
 
 .key-r-shift {
-  min-width: 7.5vw;
+
 
   border-radius: .5rem;
 }
 
 .key-space {
-  min-width: 20vw;
+  min-width: 455px;
   border-radius: .5rem;
 }
 
 .key-f1 {
-  margin-left: 3vw;
+  margin-left: 36px;
 }
 
 .key-f5 {
-  margin-left: 1vw;
+  margin-left: 36px;
 }
 
 .key-f9 {
-  margin-left: 1vw;
+  margin-left: 35px;
+}
+
+.key-f12 {
+  margin-right: 35px;
 }
 
 .key-prtsc {
-  margin-left: .5vw;
+  margin-left: 10px;
 }
 
 .key-ins {
-  margin-left: .6vw;
+  margin-left: 1px;
 }
 
 .key-del {
-  margin-left: .6vw;
+  margin-left: 1px;
 }
 
 .key-dot {
-  min-width: 3vw;
+  min-width: 65px;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 3.8rem;
+  height: 2.2rem;
 }
 
 /* Hide default HTML checkbox */
@@ -242,7 +209,3 @@ input:checked+.slider:before {
 .slider.round:before {
   border-radius: 5rem;
 }
-
-/*only apply on mobile*/
-
-/* For screens smaller than 768px */
