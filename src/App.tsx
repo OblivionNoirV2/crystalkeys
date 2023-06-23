@@ -166,8 +166,8 @@ const ColorHistory: React.FC<ColorHistoryProps> = ({
               {/*little window showing the color 
               min-w prevents expanding when rgb*/}
               <div key={index} className={
-                isDarkMode ? 'border border-white px-2 flex flex-col min-w-[14rem]'
-                  : 'border border-black px-2 flex flex-col min-w-[14rem]'
+                isDarkMode ? 'border border-white px-2 flex flex-col '
+                  : 'border border-black px-2 flex flex-col '
               }
 
                 style={{ backgroundColor: color }}
