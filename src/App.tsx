@@ -76,6 +76,9 @@ function getClassForKey(key_label: string): string {
     'Ins': 'key-ins',
     'Del': 'key-del',
     'Up': 'key-up',
+    'Down': 'key-down',
+    'Left': 'key-left',
+    'Right': 'key-right',
     'Back': 'key-backspace',
     'CapsLk': 'key-capslock',
     'Tab': 'key-tab',
@@ -88,11 +91,12 @@ function getClassForKey(key_label: string): string {
     'Alt': 'key-alt',
     'Fn': 'key-fn',
     '.': 'key-dot',
-    'Left': 'key-left',
     'R-Shift': 'key-r-shift',
     'F12': 'key-f12',
     'End': 'key-end',
     'ScrLk': 'key-scroll-lock',
+    'PgUp': 'key-pgup',
+    'PgDn': 'key-pgdown',
   };
   return `${keyClassMap[key_label]} key`
 }

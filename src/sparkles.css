@@ -170,7 +170,7 @@ body {
   }
 
   .key-end {
-    min-width: 46px;
+    min-width: 48px;
   }
 
   .key-scroll-lock {
@@ -273,28 +273,26 @@ body {
     margin-left: 7px;
   }
 
-  .key-ins {
-    margin-left: 7px;
-  }
+
 
   .key-del {
     margin-left: 4px;
   }
 
+
+
   .key-dot {
     min-width: 43px;
   }
 
-  .key-ins {
-    margin-left: 23px;
-  }
+
 
   .key-up {
     margin-left: 76px;
   }
 }
 
-@media only screen and (min-width: 720px) and (max-width: 1079px) {
+@media only screen and (min-width: 0px) and (max-width: 1079px) {
   .key-text {
     font-size: smaller;
   }
@@ -312,12 +310,9 @@ body {
     transition: all 0.1s ease-in-out;
   }
 
-  .key-end {
-    min-width: 30.8px;
-  }
 
   .key-scroll-lock {
-    min-width: 30.8px;
+    min-width: 35.8px;
   }
 
   .key-up {
@@ -351,6 +346,13 @@ body {
     min-width: 33.5px;
   }
 
+  .key-up,
+  .key-down,
+  .key-left,
+  .key-right {
+    width: 40px;
+  }
+
   .key-enter {
     min-width: 55.6px;
     border-radius: .75rem;
@@ -374,7 +376,7 @@ body {
 
   .key-l-shift,
   .key-r-shift {
-    min-width: 67.0px;
+    min-width: 68px;
     border-radius: .5rem;
   }
 
@@ -403,13 +405,6 @@ body {
     margin-right: 4.1px;
   }
 
-  .key-prtsc {
-    margin-left: 4.7px;
-  }
-
-  .key-ins {
-    margin-left: 4.7px;
-  }
 
   .key-del {
     margin-left: 2.7px;
@@ -419,12 +414,29 @@ body {
     min-width: 28.8px;
   }
 
-  .key-ins {
-    margin-left: -0.3px;
+  .key-ins,
+  .key-del,
+  .key-home,
+  .key-pgdn,
+  .key-prtsc {
+    width: 34px;
+
+  }
+
+  .key-end {
+    width: 44px;
+  }
+
+  .key-pgup {
+    width: 40px;
+  }
+
+  .key-prtsc {
+    margin-left: 20px;
   }
 
   .key-up {
-    margin-left: 50.9px;
+    margin-left: 62.9px;
   }
 }
 
