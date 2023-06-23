@@ -88,8 +88,11 @@ function getClassForKey(key_label: string): string {
     '.': 'key-dot',
     'Left': 'key-left',
     'R-Shift': 'key-r-shift',
+    'F12': 'key-f12',
+    'End': 'key-end',
+    'ScrLk': 'key-scroll-lock',
   };
-  return keyClassMap[key_label] || 'key'
+  return `${keyClassMap[key_label]} key`
 }
 
 interface KeyboardProps {
@@ -363,8 +366,7 @@ const Controls = () => {
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
   return (
-    <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 
-    -rotate-90 lg:rotate-0'>
+    <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 lg:rotate-0'>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
       <div className='flex flex-row mx-auto justify-center mt-4 '>
         <div className='flex flex-col min-w-[14rem]'>
