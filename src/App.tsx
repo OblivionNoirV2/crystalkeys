@@ -11,7 +11,8 @@ import { KeyTypeContext } from './context';
 
 const TopBar = () => {
   return (
-    <section className='crystal items-center w-full h-20 flex justify-end'>
+    <section className='crystal items-center w-full h-20 flex
+     justify-end'>
       <i>
         <h1 className='mr-8 text-4xl text-white'>
           Crystal Keys
@@ -28,13 +29,14 @@ which then changes the color of whatever key is clicked*/
 //split the keyboard into different segments
 //every element here has its own index, one huge array
 const key_sets: { [row: string]: string[] } = {
+
   top_row: [
     'Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6',
     'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'PrtSc', 'ScrLk', 'Pause',
   ],
   second_row: [
     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
-    'Backspace', 'Ins', 'Home', 'PgUp'
+    'Back', 'Ins', 'Home', 'PgUp'
   ],
   third_row: [
     'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
@@ -66,7 +68,7 @@ function hexToRgb(hex: string) {
 
 function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
-  const keyClassMap: { [key: string]: string } = {
+  const keyClassHash: { [key: string]: string } = {
     'F1': 'key-f1',
     'F5': 'key-f5',
     'F9': 'key-f9',
@@ -74,7 +76,10 @@ function getClassForKey(key_label: string): string {
     'Ins': 'key-ins',
     'Del': 'key-del',
     'Up': 'key-up',
-    'Backspace': 'key-backspace',
+    'Down': 'key-down',
+    'Left': 'key-left',
+    'Right': 'key-right',
+    'Back': 'key-backspace',
     'CapsLk': 'key-capslock',
     'Tab': 'key-tab',
     'Enter': 'key-enter',
@@ -86,13 +91,14 @@ function getClassForKey(key_label: string): string {
     'Alt': 'key-alt',
     'Fn': 'key-fn',
     '.': 'key-dot',
-    'Left': 'key-left',
     'R-Shift': 'key-r-shift',
     'F12': 'key-f12',
     'End': 'key-end',
     'ScrLk': 'key-scroll-lock',
+    'PgUp': 'key-pgup',
+    'PgDn': 'key-pgdown',
   };
-  return `${keyClassMap[key_label]} key`
+  return `${keyClassHash[key_label]} key`
 }
 
 interface KeyboardProps {
@@ -166,8 +172,8 @@ const ColorHistory: React.FC<ColorHistoryProps> = ({
               {/*little window showing the color 
               min-w prevents expanding when rgb*/}
               <div key={index} className={
-                isDarkMode ? 'border border-white px-2 flex flex-col min-w-[14rem]'
-                  : 'border border-black px-2 flex flex-col min-w-[14rem]'
+                isDarkMode ? 'border border-white px-2 flex flex-col '
+                  : 'border border-black px-2 flex flex-col '
               }
 
                 style={{ backgroundColor: color }}
@@ -357,6 +363,8 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
     </section>
   );
 };
+
+//all this stacks flex col on mobile
 const Controls = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
@@ -366,9 +374,10 @@ const Controls = () => {
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
   return (
-    <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 lg:rotate-0'>
+    <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 '>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <div className='flex flex-row mx-auto justify-center mt-4 '>
+      <div className='flex flex-col md:flex-row mx-auto 
+      mt-4 '>
         <div className='flex flex-col min-w-[14rem]'>
           <h1 className={
             isDark ? "text-white" : "text-black"
@@ -379,7 +388,11 @@ const Controls = () => {
               )
                 : color
             } </h1>
-          <ColorInput color={color} setColor={setColor} colorHistory={prevColors} setColorHistory={setPrevColors} />
+          <ColorInput
+            color={color}
+            setColor={setColor}
+            colorHistory={prevColors}
+            setColorHistory={setPrevColors} />
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Previous key colors:</h1>
