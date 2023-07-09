@@ -301,7 +301,7 @@ body {
     margin: 1px;
     min-width: 28.8px;
     padding: 4.7px;
-    font-size: small;
+    font-size: smaller;
     border-radius: .75rem;
     border: solid 0.2rem transparent;
     cursor: pointer;
@@ -439,6 +439,8 @@ body {
     margin-left: 62.9px;
   }
 }
+
+
 
 .switch {
   position: relative;

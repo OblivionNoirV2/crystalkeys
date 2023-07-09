@@ -68,7 +68,7 @@ function hexToRgb(hex: string) {
 
 function getClassForKey(key_label: string): string {
   //default is just 'key', some require more work
-  const keyClassMap: { [key: string]: string } = {
+  const keyClassHash: { [key: string]: string } = {
     'F1': 'key-f1',
     'F5': 'key-f5',
     'F9': 'key-f9',
@@ -98,7 +98,7 @@ function getClassForKey(key_label: string): string {
     'PgUp': 'key-pgup',
     'PgDn': 'key-pgdown',
   };
-  return `${keyClassMap[key_label]} key`
+  return `${keyClassHash[key_label]} key`
 }
 
 interface KeyboardProps {
@@ -363,6 +363,8 @@ const Keyboard: React.FC<KeyboardProps> = ({ selected_color, selected_board_colo
     </section>
   );
 };
+
+//all this stacks flex col on mobile
 const Controls = () => {
   const { prevColors, setPrevColors } = useContext(PrevColorsContext);
   const [color, setColor] = useState<string>('#000000')
@@ -374,7 +376,8 @@ const Controls = () => {
   return (
     <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 '>
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <div className='flex flex-row mx-auto justify-center mt-4 '>
+      <div className='flex flex-col md:flex-row mx-auto 
+      mt-4 '>
         <div className='flex flex-col min-w-[14rem]'>
           <h1 className={
             isDark ? "text-white" : "text-black"
@@ -385,7 +388,11 @@ const Controls = () => {
               )
                 : color
             } </h1>
-          <ColorInput color={color} setColor={setColor} colorHistory={prevColors} setColorHistory={setPrevColors} />
+          <ColorInput
+            color={color}
+            setColor={setColor}
+            colorHistory={prevColors}
+            setColorHistory={setPrevColors} />
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Previous key colors:</h1>
