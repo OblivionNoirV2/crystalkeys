@@ -373,10 +373,12 @@ const Controls = () => {
   const [isRGB, setIsRGB] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
+
   return (
-    <main className='flex flex-col m-auto justify-center mt-[28rem] lg:mt-4 '>
+    <main className='mt-64 rotate-90 md:rotate-0 flex flex-col m-auto justify-center md:mt-8 mb-4 lg:mt-4 '>
+
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <div className='flex flex-col md:flex-row mx-auto 
+      <div className='flex flex-row mx-auto 
       mt-4 '>
         <div className='flex flex-col min-w-[14rem]'>
           <h1 className={
@@ -396,8 +398,12 @@ const Controls = () => {
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Previous key colors:</h1>
-          <ColorHistory colorHistory={prevColors} setColor={setColor}
-            isRGB={isRGB} isDarkMode={isDark} />
+          <ColorHistory
+            colorHistory={prevColors}
+            setColor={setColor}
+            isRGB={isRGB}
+            isDarkMode={isDark}
+          />
         </div>
         <div className='flex flex-col ml-8 min-w-[14rem]'>
           <h1 className={
