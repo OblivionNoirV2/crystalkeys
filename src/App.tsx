@@ -362,17 +362,16 @@ const Controls = () => {
   const [isRGB, setIsRGB] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 720);
   useEffect(() => {
     function CheckMobile() {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 720);
     }
     window.addEventListener('resize', CheckMobile);
 
     //cleanup on unmount 
     return () => window.removeEventListener('resize', CheckMobile);
   }, [])
-
 
   return (
     <main className=' flex flex-col m-auto 
