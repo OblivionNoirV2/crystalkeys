@@ -375,7 +375,7 @@ const Controls = () => {
   const rgb = hexToRgb(color);
 
   return (
-    <main className='mt-64 rotate-90 md:rotate-0 flex flex-col m-auto justify-center md:mt-8 mb-4 lg:mt-4 '>
+    <main className=' flex flex-col m-auto justify-center md:mt-8 mb-4 lg:mt-4 '>
 
       <Keyboard selected_color={color} selected_board_color={boardColor} />
       <div className='flex flex-row mx-auto 
