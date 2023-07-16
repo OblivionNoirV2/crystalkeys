@@ -9,18 +9,7 @@ import { BoardColorsContext } from './context';
 import { PrevBoardColorContext } from './context';
 import { KeyTypeContext } from './context';
 
-const TopBar = () => {
-  return (
-    <section className='crystal items-center w-full h-20 flex
-     justify-end'>
-      <i>
-        <h1 className='mr-8 text-4xl text-white'>
-          Crystal Keys
-        </h1>
-      </i>
-    </section>
-  )
-}
+
 /*how this is going to work is the color picker will 
 set the color state, which is then passed to the keyboard component, 
 which then changes the color of whatever key is clicked*/
@@ -373,9 +362,25 @@ const Controls = () => {
   const [isRGB, setIsRGB] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const rgb = hexToRgb(color);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    function CheckMobile() {
+      setIsMobile(window.innerWidth <= 768);
+    }
+    window.addEventListener('resize', CheckMobile);
+
+    //cleanup on unmount 
+    return () => window.removeEventListener('resize', CheckMobile);
+  }, [])
+
 
   return (
-    <main className=' flex flex-col m-auto justify-center md:mt-8 mb-4 lg:mt-4 '>
+    <main className=' flex flex-col m-auto 
+    justify-center md:mt-8 mb-4 mt-4 lg:mt-16 '>
+      {
+        isMobile &&
+        <h1 className='justify-center mx-auto'>Rotate your phone for a better experience</h1>
+      }
 
       <Keyboard selected_color={color} selected_board_color={boardColor} />
       <div className='flex flex-row mx-auto 
@@ -459,7 +464,6 @@ function App() {
         <source src={blueswitch} type='audio/mpeg' />
         <source src={redswitch} type='audio/mpeg' />
       </audio>
-      <TopBar />
       <Controls />
     </main>
   );
