@@ -420,8 +420,9 @@ body {
   .key-del,
   .key-home,
   .key-pgdn,
-  .key-prtsc {
-    width: 34px;
+  .key-prtsc,
+  .key-pause {
+    width: 38px;
 
   }
 
