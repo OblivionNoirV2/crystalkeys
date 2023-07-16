@@ -10,15 +10,9 @@
 body {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.7) 0%,
       rgba(109, 247, 250, 0.4) 100%);
-  min-height: 100vh;
-  min-width: 100%;
-  margin: 0;
+  background-size: cover;
 }
 
-
-html {
-  height: 100%;
-}
 
 /*big screens*/
 @media only screen and (min-width: 1440px) {
