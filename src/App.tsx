@@ -86,6 +86,7 @@ function getClassForKey(key_label: string): string {
     'ScrLk': 'key-scroll-lock',
     'PgUp': 'key-pgup',
     'PgDn': 'key-pgdown',
+    'Pause': 'key-pause',
   };
   return `${keyClassHash[key_label]} key`
 }
