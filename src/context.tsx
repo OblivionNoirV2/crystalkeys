@@ -14,9 +14,6 @@ export const PrevColorsContext = createContext<prevColorsValues>({
 export function PrevColorsContextProvider({ children }: { children: React.ReactElement }) {
     const [prevColors, setPrevColors] = useState<string[]>([]);
 
-    useEffect(() => {
-        console.log("color changed" + prevColors);
-    }, [prevColors]);
 
     return (
         <PrevColorsContext.Provider value={{ prevColors, setPrevColors }}>
@@ -41,9 +38,6 @@ export function KeyColorsContextProvider({ children }: { children: React.ReactEl
         keys_array.map(
             () => '#fff'));
 
-    useEffect(() => {
-        console.log("color changed" + keyColors);
-    }, [keyColors]);
 
     return (
         <KeyColorsContext.Provider value={{ keyColors, setKeyColors }}>
@@ -66,9 +60,6 @@ export const ColorContext = createContext<ColorValues>({
 export function ColorContextProvider({ children }: { children: React.ReactElement }) {
     const [color, setColor] = useState<string>('');
 
-    useEffect(() => {
-        console.log("color changed" + color);
-    }, [color]);
 
     return (
         <ColorContext.Provider value={{ color, setColor }}>
@@ -90,10 +81,6 @@ export const BoardColorsContext = createContext<BoardColorsValues>({
 export function BoardColorsContextProvider({ children }: { children: React.ReactElement }) {
     const [boardColor, setBoardColor] = useState<string>('#242c9e');
 
-    useEffect(() => {
-        console.log("color changed" + boardColor);
-    }, [boardColor]);
-
     return (
         <BoardColorsContext.Provider value={{ boardColor, setBoardColor }}>
             {children}
@@ -114,9 +101,7 @@ export const PrevBoardColorContext = createContext<PrevBoardColorValues>({
 export function PrevBoardColorContextProvider({ children }: { children: React.ReactElement }) {
 
     const [prevBoardColors, setPrevBoardColors] = useState<string[]>([]);
-    useEffect(() => {
-        console.log("board history changed" + prevBoardColors);
-    }, [prevBoardColors]);
+
 
     return (
         <PrevBoardColorContext.Provider value={{ prevBoardColors, setPrevBoardColors }}>
@@ -138,9 +123,7 @@ export const KeyTypeContext = createContext<KeyTypeValues>({
 export function KeyTypeContextProvider({ children }: { children: React.ReactElement }) {
     const [keyType, setKeyType] = useState<string>('red');
 
-    useEffect(() => {
-        console.log("key type changed" + keyType);
-    }, [keyType]);
+
 
     return (
         <KeyTypeContext.Provider value={{ keyType, setKeyType }}>
