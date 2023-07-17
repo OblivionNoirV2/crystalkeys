@@ -438,6 +438,40 @@
 }
 
 
+@media only screen and (min-width: 0px) and (max-width: 768px) {
+  .switch {
+    width: 2.85rem;
+    height: 1.65rem;
+
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    bottom: .075rem;
+    top: .015rem;
+    left: .075rem;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  input:checked+.slider:before {
+    -webkit-transform: translateX(1.125rem);
+    -ms-transform: translateX(1.125rem);
+    transform: translateX(1.125rem);
+  }
+
+  .slider.round {
+    border-radius: 3.75rem;
+  }
+
+  .slider.round:before {
+    border-radius: rem;
+  }
+}
 
 .switch {
   position: relative;

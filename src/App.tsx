@@ -227,8 +227,8 @@ const ResetButton: React.FC<ResetButtonProps> = ({ isDark }) => {
   return (
     <button onClick={handleReset}
       className={
-        isDark ? 'text-white border border-white px-4 py-2 rounded-xl' :
-          'text-black border border-black px-4 py-2 rounded-xl'
+        isDark ? 'text-white border border-white px-4 py-2 rounded-xl -ml-12 -mr-16  md:ml-8 md:-mr-0' :
+          'text-black border border-black px-4 py-2 rounded-xl -ml-12 -mr-16  md:ml-8 md:-mr-0'
       }>Reset</button>
   );
 }
@@ -371,13 +371,15 @@ const Controls = () => {
     justify-center md:mt-8 mb-4 mt-4 lg:mt-16 '>
       {
         isMobile &&
-        <h1 className='justify-center mx-auto'>Rotate your phone for a better experience</h1>
+        <h1 className='justify-center mx-auto'>
+          Rotate your phone for a better experience
+        </h1>
       }
 
       <Keyboard selected_color={color} selected_board_color={boardColor} />
-      <div className='flex flex-row mx-auto 
+      <div className='flex flex-row mx-auto sm:w-[40rem]  md:w-auto
       mt-4 '>
-        <div className='flex flex-col min-w-[14rem]'>
+        <div className='flex flex-col sm:w-[8rem]  md:w-[14rem] '>
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Key color: {
@@ -402,7 +404,7 @@ const Controls = () => {
             isDarkMode={isDark}
           />
         </div>
-        <div className='flex flex-col ml-8 min-w-[14rem]'>
+        <div className='flex flex-col ml-4 md:ml-8 min-w-[14rem]'>
           <h1 className={
             isDark ? "text-white" : "text-black"
           }>Board color: {
@@ -423,7 +425,7 @@ const Controls = () => {
           <ColorHistory colorHistory={prevBoardColors}
             setColor={setBoardColor} isRGB={isRGB} isDarkMode={isDark} />
         </div>
-        <section >
+        <section className=''>
           <ResetButton isDark={isDark} />
         </section>
         <section className='flex flex-col  ml-8'>
