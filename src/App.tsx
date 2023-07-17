@@ -155,7 +155,7 @@ const ColorHistory: React.FC<ColorHistoryProps> = ({
       {colorHistory.length !== 0 && colorHistory.map((color, index) => {
         const rgb = hexToRgb(color);
         return (
-          <button onClick={() => setColor(color)}>
+          <button onClick={() => setColor(color)} key={index}>
             <li className={
               isDarkMode ? 'text-white' : 'text-black'
             }>
@@ -244,9 +244,7 @@ const HexRGBSwitch: React.FC<HexRGBSwitchProps> = ({ isRGB, setIsRGB, isDark }) 
     setIsRGB(!isRGB);
   }
 
-  useEffect(() => {
-    console.log(isRGB);
-  }, [isRGB]);
+
 
   return (
     <label className="switch">
@@ -268,7 +266,6 @@ const DarkLightSwitch: React.FC<DarkLightSwitchProps> = ({ isDark, setIsDark }) 
     } else {
       document.body.style.backgroundColor = "#ffffff";
     }
-    console.log(isDark);
   }, [isDark]);
 
   const handleDarkLightSwitch = () => {
@@ -289,14 +286,9 @@ interface SoundSelectProps {
 }
 const SoundSelect: React.FC<SoundSelectProps> = ({ isDark }) => {
   const { keyType, setKeyType } = useContext(KeyTypeContext);
-  useEffect(() => {
-    console.log(isDark);
 
-  }, [isDark]);
 
-  useEffect(() => {
-    console.log(keyType);
-  }, [keyType]);
+
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.target.value !== "" && setKeyType(e.target.value);
